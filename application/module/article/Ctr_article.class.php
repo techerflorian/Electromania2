@@ -13,7 +13,7 @@ class Ctr_article extends Ctr_controleur implements I_crud {
 
 	function a_index() {
 		$u=new Article();
-		$data=$u->selectCategorieByArticle();
+		$data=$u->selectAll();
 		require $this->gabarit;
 	}
 	

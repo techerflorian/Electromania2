@@ -38,14 +38,11 @@
 			
 			<td><?=$com_id?></td>
 			<td><?=$com_date?></td>
-			<td><?=$com_utilisateur?></td>
+			<td><?=$uti_nom?></td>
             <td><a href="<?= hlien("commande", "panier", "id", $com_utilisateur) ?>" >Panier</a></td>
             <td class="text-center">
                 <a class="btn btn-sm btn-info" href="<?=hlien("commande","show","id",$com_id)?>" title="Voir">
                     <i class="bi bi-eye"></i>
-                </a>
-                <a class="btn btn-sm btn-warning" href="<?=hlien("commande","edit","id",$com_id)?>" title="Modifier">
-                    <i class="bi bi-pencil"></i>
                 </a>
                 <a class="btn btn-sm btn-danger" href="<?=hlien("commande","delete","id",$com_id)?>" onclick="return confirm('Êtes-vous sûr ?');" title="Supprimer">
                     <i class="bi bi-trash"></i>

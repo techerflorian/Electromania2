@@ -17,8 +17,23 @@
                             <small class='form-text text-muted'>aide à la saisie</small>
                         </div>
                         <div class='mb-3'>
-                            <label for='com_utilisateur' class='form-label'>Com_utilisateur <span class='text-danger'>*</span></label>                            
-                            <input id='com_utilisateur' name='com_utilisateur' type='number' size='80' value='<?=$com_utilisateur?>'  class='form-control' required />
+                            <label for='art_nom' class='form-label'>art_nom <span class='text-danger'>*</span></label>                            
+                            <input id='art_nom' name='art_nom' type='text' size='80' value=''  class='form-control' required />
+                            <small class='form-text text-muted'>aide à la saisie</small>
+                        </div>
+                        <div class='mb-3'>
+                            <label for='art_prix' class='form-label'>art_prix <span class='text-danger'>*</span></label>                            
+                            <input id='art_prix' name='art_prix' type='number' size='80' value=''  class='form-control' required />
+                            <small class='form-text text-muted'>aide à la saisie</small>
+                        </div>
+                        <div class='mb-3'>
+                            <label for='art_description' class='form-label'>art_description <span class='text-danger'>*</span></label>                            
+                            <textarea id='art_description' name='art_description' size='80' value=''  class='form-control' required></textarea>
+                            <small class='form-text text-muted'>aide à la saisie</small>
+                        </div>
+                        <div class='mb-3'>
+                            <label for='com_utilisateur' class='form-label'>com_utilisateur <span class='text-danger'>*</span></label>                            
+                            <select id='com_utilisateur' name='com_utilisateur'  class='form-select'> required<?=Table::HTMLselect('select * from utilisateur', 'uti_id', 'uti_nom', $com_utilisateur)?></select>
                             <small class='form-text text-muted'>aide à la saisie</small>
                         </div>
                     <div class="d-flex gap-2">

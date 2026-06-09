@@ -12,11 +12,9 @@
         <li><a class='nav-link' href='<?=hlien("article","index")?>'>Article</a></li>
 <li><a class='nav-link' href='<?=hlien("categorie","index")?>'>Categorie</a></li>
 <li><a class='nav-link' href='<?=hlien("commande","index")?>'>Commande</a></li>
-<li><a class='nav-link' href='<?=hlien("contenir","index")?>'>Contenir</a></li>
 <li><a class='nav-link' href='<?=hlien("profil","index")?>'>Profil</a></li>
 <li><a class='nav-link' href='<?=hlien("utilisateur","index")?>'>Utilisateur</a></li>
 <?php } else if (isset($_SESSION["uti_profil"]) and $_SESSION["uti_profil"]==1) { ?>
-<li><a class='nav-link' href='<?=hlien("commande","panier", "id")?>'>Panier</a></li>
       </ul>
       <?php } ?>
       <ul class="navbar-nav ml-auto">

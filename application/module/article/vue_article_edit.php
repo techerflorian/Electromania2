@@ -23,7 +23,7 @@
                         </div>
                         <div class='mb-3'>
                             <label for='art_description' class='form-label'>Art_description <span class='text-danger'>*</span></label>                            
-                            <input id='art_description' name='art_description' type='text' size='80' value='<?=$art_description?>'  class='form-control' required />
+                            <textarea id='art_description' name='art_description' size='80' value='<?=$art_description?>'  class='form-control' required></textarea>
                             <small class='form-text text-muted'>aide à la saisie</small>
                         </div>
                         <div class='mb-3'>

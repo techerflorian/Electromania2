@@ -20,6 +20,9 @@
 			<th>com_id</th>
 			<th>com_date</th>
 			<th>uti_nom</th>
+            <th>art_nom</th>
+            <th>art_prix</th>
+            <th>art_description</th>
 				<th class="text-center">Actions</th>
 			</tr>
 		</thead>
@@ -32,6 +35,9 @@
 			<td><?=$com_id?></td>
 			<td><?=$com_date?></td>
 			<td><?=$uti_nom?></td>
+            <td><?=$art_nom?></td>
+            <td><?=$art_prix?></td>
+            <td><?=$art_description?></td>
             <td class="text-center">
                 <a class="btn btn-sm btn-info" href="<?=hlien("commande","show","id",$com_id)?>" title="Voir">
                     <i class="bi bi-eye"></i>
