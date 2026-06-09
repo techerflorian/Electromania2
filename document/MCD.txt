@@ -1,0 +1,125 @@
+Dictionnaire de données :
+-----------------------------
+Entité :
+
+utilisateur
+- id pk
+- nom varchar
+- prenom varchar
+- adresse varchar
+- email varchar
+- numero de telephone varchar
+- mot de passe varchar
+
+profil
+- id pk
+- nom varchar
+
+article
+- id pk
+- nom varchar
+- prix float
+- description varchar
+
+categorie
+- id pk
+- libelle varchar
+
+commande
+- id pk
+- date datetime
+
+associer :
+utilisateur-------------associer-----------profil
+un utilisateur peut être associer a un profil.
+utilisateur : 1,1
+profil : 1,N
+
+passer :
+utilisateur-------------passer-----------commande
+un utilisateur peut passer une commande.
+utilisateur : 1,N
+commande : 1,N
+
+
+comporter :
+commande--------------comporter----------------article
+Une commande peut comporter un article.
+commande : 1,N 
+article : 1,N
+
+appartenir :
+article-------------appartenir--------------categorie
+un article peut appartenir a une categorie.
+article : 1,1
+categorie : 1,N
+
+2. MCD
+----------------------
+<entités>
+utilisateur
+profil
+article
+categorie
+commande
+</entités>
+
+<relation>
+association :
+- utilisateur 1,1
+- profil 1,N
+
+passer :
+- utilisateur 1,N
+- commande 1,N
+
+comporter :
+- commande 1,N
+- article 1,N
+
+appartenir :
+- article 1,1
+- categorie 1,N
+</relation>
+
+3. MLD
+------------------------------
+Tables
+utilisateur
+- uti_id
+- uti_nom
+- uti_prenom
+- uti_adresse
+- uti_email
+- uti_numero_telephone
+- uti_mot_de_passe
+- uti_profil
+
+profil
+- pro_id
+- pro_nom
+
+article
+- art_id
+- art_nom
+- art_prix
+- art_description
+- art_categorie
+
+categorie
+- cat_id
+- cat_libelle
+
+commande
+- com_id
+- com_date
+
+passer
+- pas_id
+- pas_utilisateur
+- pas_commande
+
+comporter
+- com_id
+- com_commande
+- com_article

@@ -1,0 +1,45 @@
+﻿v5.0 UPDATE du 01/12/2025 au 10/12/2025 : 
+- Simplification du code de Table.class.php
+- ajout d'un fichier .env pour gérer différentes configuration avec la classe EnvLoader.
+- ajout d'une protection contre les CSRF avec une classe CsrfToken pour gérer les token dans les formulaires.
+- ajout d'une gestion des errors et des logs avec les classes ErrorHandler et Logger.
+- ajout d'une classe TraitUser dans le dossier "framework" pour stocker les méthodes en lien avec le module "authentification".
+- ajout dans le générateur de la vue "show".
+- modification des vues avec les classes et les icons intégrés à bootstrap5.2.
+- suppression de la classe Database. Les méthodes pour créer la BDD et générer le dataset sont maintenant dans la classe Table.
+- Suppression du controleur Database, transfert des actions et des vues dans _default.
+- Ajout du script "formation.sql" dans "document" pour un exemple de projet.
+
+v4.2+ UPDATE du 02/11/2025 : correction de insertSQL : permet d'avoir des données partielles avec des valeurs par défaut définies dans la BDD.
+
+v4.2 UPDATE du 13/03/2024 : amélioration du générateur : suppression des mhe($row...)
+
+v4.1 UPDATE du 20/02/2024 : amélioration de la méthode "updateSql" dans la classe "Table"
+- permet de générer une requête SQL de type update à partir de données d'enregistrement partielles.
+
+v4.0 UPDATE du 13/11/2023 : amélioration du générateur
+- Le générateur détecte automatiquement la clé primaire (plus besoin de la règle "cle primaire = 3 lettres + "_id" )
+- formulaires générés en tenant compte du type de chaque champ, liste déroulante pour les clés étrangères (int,varchar,date,datetime,time,int + FK)
+
+v3.0 UPDATE du 24/02/2023
+- ajout de la classe interface I_crud (framework/I_crud.class.php)
+- update du modele Ctr_xxx.php qui implements I_crud
+- update du modele xxx_edit.php (action="save")
+
+v2.2 UPDATE du 07/03/2022
+- config.php : try catch sur la connexion
+- ajout du module "authentification"
+- fonction.php : 
+	- modification de hlien : if (count($args)==0) return "index.php";
+	- ajout de la fonction "checkAuth()"
+	- ajout de la fonction "checkAllow($profil)"
+
+v2.1 UPDATE du 28/02/2022 : 
+- implementer des raccourcis d'accessibilité pour atteindre le menu et le contenu principal
+- implementer les messages après enregistrements de données
+
+v2.0 UPDATE du 25/02/2022
+- Générateur : sélection des tables via des cases à cocher.
+- Table.class.php : ajout de la methode "getTablesNames()".
+- fonction.php : ajout de la fonction "debug()".
+

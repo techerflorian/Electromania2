@@ -1,0 +1,175 @@
+═══════════════════════════════════════════════════════════════════════════════════════
+
+🚀 A. INITIER LE PROJET
+═══════════════════════════════════════════════════════════════════════════════════════
+
+  ☐ 1. Créer un dossier "mediatek"
+  ☐ 2. Copier le framework dans ce dossier
+  ☐ 3. Copier les script SQL "mediatek.sql" dans "document"
+  ☐ 4. Exécuter le script sql via legum
+  ☐ 5. Configurer le fichier .ENV situé à la racine du projet
+  ☐ 6. Dans un navigateur, aller à l'url /mediatek/www/
+  ☐ 7. Déclencher le générateur
+
+───────────────────────────────────────────────────────────────────────────────────────────
+
+📝 B. INSCRIPTION
+═══════════════════════════════════════════════════════════════════════════════════════
+
+  ☐ 1. Adapter la vue authentification_inscription.php aux champs de la table utilisateur
+  ☐ 2. Copier la méthode "estEmailUnique()" depuis "framework/TraitUser.php" 
+       dans "table/Utilisateur.class.php"
+  ☐ 3. Dans l'action "inscription()" adapter le code aux champs de la table utilisateur
+  ☐ 4. Tester une inscription
+
+───────────────────────────────────────────────────────────────────────────────────────────
+
+🔐 C. CONNEXION
+═══════════════════════════════════════════════════════════════════════════════════════
+
+  ☐ 1. Vérifier la vue "connexion" (champs Unique de la table utilisateur)
+  ☐ 2. Copier la méthode "selectByEmail()" depuis "framework/TraitUser.php" 
+       dans "table/Utilisateur.class.php"
+  ☐ 3. Dans l'action "connexion()" adapter le code aux champs de la table utilisateur
+  ☐ 4. Tester une connexion
+
+───────────────────────────────────────────────────────────────────────────────────────────
+
+🏠 D. ACCUEIL
+═══════════════════════════════════════════════════════════════════════════════════════
+
+  ☐ 1. Modifier la vue "_default_index.php" en supprimant le bouton du générateur
+
+───────────────────────────────────────────────────────────────────────────────────────────
+
+⚙️  E. CRUD ADMIN
+═══════════════════════════════════════════════════════════════════════════════════════
+
+  ⓘ Info : Passer en revue chaque table et améliorer les vues créées par le générateur
+  
+    ✎ Dans la liste des enregistrements : remplacer le code des clés étrangères par un libellé
+    ✎ Dans le formulaire d'édition : afficher un libellé dans les listes déroulantes 
+      et retirer les champs non utiles
+  
+  ⚠️  Note : Pour les tables issues d'une relation N-N, il n'y a pas de CRUD
+
+  ┌─────────────────────────────────────────────────────────────────────────────────────
+  │ 📂 E1. TABLE MEDIA
+  └─────────────────────────────────────────────────────────────────────────────────────
+
+    ☐ 1. Créer la méthode "selectAll()" dans la classe "table/Media.class.php" 
+         qui sélectionne tous les enregistrements avec les jointures associées
+    ☐ 2. Modifier la vue "Media_index.php" pour afficher les libellés des clés étrangères
+    ☐ 3. Modifier le formulaire d'édition "media_edit.php" 
+         (adapter les listes déroulantes, mettre des textarea si besoin, etc.)
+
+  ┌─────────────────────────────────────────────────────────────────────────────────────
+  │ 👤 E2. TABLE UTILISATEUR
+  └─────────────────────────────────────────────────────────────────────────────────────
+
+    ☐ 1. Dans la vue "utilisateur_index.php", ne pas afficher le mot de passe
+    ☐ 2. Dans le formulaire d'édition "utilisateur_edit.php", retirer les champs :
+         "uti_email", "mot_de_passe", "date d'inscription"
+
+  ┌─────────────────────────────────────────────────────────────────────────────────────
+  │ 🔗 E3. TABLE MEDIA_MOTCLE (Relation N-N)
+  └─────────────────────────────────────────────────────────────────────────────────────
+
+    ⓘ Note : Tables composées de 2 clés étrangères. Gérer en choisissant un côté 
+             de la relation.
+
+    ┌──────────────────────────────────────────────────────────────────────────────
+    │ a) Côté MEDIA
+    └──────────────────────────────────────────────────────────────────────────────
+
+      ☐ 1. Créer une requête qui liste les mots clés d'un média donné
+      ☐ 2. Créer une requête qui liste les mots clés NON associés à un média donné
+      ☐ 3. Dans la vue d'édition d'un média, afficher les mots clés sous forme 
+           de cases à cocher
+      ☐ 4. Gérer les mots clés d'un média :
+           • Supprimer toutes les associations de mots clés avec ce média
+           • Ajouter les associations (mots clés cochés du formulaire d'édition)
+
+    ┌──────────────────────────────────────────────────────────────────────────────
+    │ b) Côté MOTCLE
+    └──────────────────────────────────────────────────────────────────────────────
+
+      ☐ 1. Créer une requête qui liste les médias associés à un mot clé
+      ☐ 2. Créer une requête qui liste les médias NON associés à un mot clé
+      ☐ 3. Dans la vue d'édition d'un mot clé, afficher les médias sous forme 
+           de cases à cocher
+      ☐ 4. Gérer les médias d'un mot clé :
+           • Supprimer toutes les associations des médias avec ce mot clé
+           • Ajouter les associations (médias cochés du formulaire d'édition)
+
+      ☐ 5. Tester l'ajout d'un média pour un mot clé
+      ☐ 6. Consulter ce média et vérifier la présence du mot clé
+
+───────────────────────────────────────────────────────────────────────────────────────────
+
+🔑 F. CONFIGURER LES DROITS D'ACCÈS
+═══════════════════════════════════════════════════════════════════════════════════════
+
+  👨‍💼 Profil ADMIN
+  ┌──────────────────────────────────────────────────────────────────────────────────
+  │ Accès aux modules : Media, Motcle, Statut, Type_support, Utilisateur
+  │
+  ├─ ☐ Modifier "gabarit/inc_menu.php" en masquant les items inutiles 
+  │    en fonction du profil utilisateur
+  ├─ ☐ Ajouter dans le constructeur de chaque contrôleur "admin" :
+  │    l'instruction 'checkAllow(["admin"]);'
+  └──────────────────────────────────────────────────────────────────────────────────
+
+  👤 Profil USER
+  ┌──────────────────────────────────────────────────────────────────────────────────
+  │ Accès au module : "user"
+  └──────────────────────────────────────────────────────────────────────────────────
+
+───────────────────────────────────────────────────────────────────────────────────────────
+
+📱 G. L'APPLICATION STANDARD - MODULE "USER"
+═══════════════════════════════════════════════════════════════════════════════════════
+🎯 Ajouter un lien dans le menu : hlien("user","accueil")
+
+🎯 Création du module "user" :
+- Dans le dossier "module", créer un dossier "user".
+- Dans le dossier "user", créer un fichier "Ctr_user.class.php".
+- Dans  "Ctr_user.class.php" créer la classe "Ctr_user" héritée de "Ctr_controleur".
+
+🎯 Création de l'action "accueil" :
+- Dans la classe "Ctr_user", créer le méthode "a_accueil()" qui récupère la liste des utilisateurs de profil "user".
+    - Dans "table/Utilisateur.class.php" créer une méthode "selectByProfil($profil)" qui retourne les utilisateurs ayant un profil donné.
+- Créer la vue associée à cette action, "vue_user_accueil.php" qui affiche la liste des utilisateurs.
+- Liens cliquables sur chaque utilisateur
+     └─ hlien("user", "media", "uti_id", $uti_id)
+
+📋 Création de l'action "media()" : Affiche la liste des médias de l'utilisateur sélectionné
+
+═══════════════════════════════════════════════════════════════════════════════════════
+
+📱 H. MODE CONNECTE - PROFIL "user"
+═══════════════════════════════════════════════════════════════════════════════════════
+Le user peux gérer a médiatek (CRUD) mais uniquement ses propres médias. 
+🎯 Ajouter un lien dans le menu : hlien("media","index")
+
+Gestion de la sécurité dans le controleur Media :
+- vérifier pour chaque action :
+ => si l'utilisateur a le profil "user", il doit posséder le média qu'il souhaite modifier.
+
+🎯 Création d'une fonction "verificationUser($med_id,$uti_id)" 
+
+
+───────────────────────────────────────────────────────────────────────────────────────────
+
+📱 I. Fonction de recherche multi-critères
+═══════════════════════════════════════════════════════════════════════════════════════
+🎯 Ajouter un lien dans le menu : hlien("user","chercher")
+
+🎯 développer l'action "a_chercher()"....
+
+Pour le critère "support" :
+- créer la vue "vue_user_chercher.php" qui comprend un formulaire qui affiche la liste des supports dans une liste déroulante.
+- Après validation du formulaire, la page affiche les médias ayant le support sélectionné.
+
+
+

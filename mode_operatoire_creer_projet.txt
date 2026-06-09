@@ -1,0 +1,7 @@
+Creer une nouveau projet :
+-------------------------
+0. Créer un nouveau dossier projet.
+1. Copier le framework dans le nouveau dossier projet.
+2. Editer le fichier .env pour renseigner les différentes variables (dont la connexion à la base de données).
+3. Créer la base de données si ce n'est pas le cas.
+4. Depuis un navigateur accéder à la page index.php et déclencher le générateur (pour créer le CRUD de chaque table)

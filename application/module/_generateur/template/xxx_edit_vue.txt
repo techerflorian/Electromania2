@@ -1,0 +1,25 @@
+    <div class="container-fluid py-4">
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <h2><i class="bi bi-pencil-square"></i> Modifier un(e) [nomTable]</h2>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-md-8">
+                <form method="post" action="<?=hlien("[nomTable]","save")?>">
+                    <?= csrfField() ?>
+                    <input type="hidden" name="[nomCle]" id="[nomCle]" value="<?= $id ?>" />
+                    [listeChamps]
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-success" type="submit" name="btSubmit">
+                            <i class="bi bi-check-circle"></i> Enregistrer
+                        </button>
+                        <button class="btn btn-secondary" type="button" onclick="history.back()">
+                            <i class="bi bi-x-circle"></i> Annuler
+                        </button>
+                    </div>
+                </form>              
+            </div>
+        </div>
+    </div>

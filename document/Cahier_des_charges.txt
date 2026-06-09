@@ -1,0 +1,119 @@
+Création d'un site web marchand
+----------------------------------------------------------------------------------------
+Crée un site web de vente de materiel informatique, console de jeu, électroménager.
+
+1. Conception du site ElectroMania :
+-------------------------
+A. Ce site comportera six page et un logo :
+Une page d'accueil, une page pour le materiel informatique, 
+une page pour les console de jeu ainsi que les jeu qui y sont compatible, 
+une page pour les appareil électroménager, le panier et une page pour le chiffre d'affaire.
+
+Sur la page d'accueil se trouvera les onglets materiel informatique, console et jeu, électroménager, 
+un bouton pour aller au panier et une page de paiement pour chaque categorie une image cliquable, qui redirige a la liste des produit.
+un moteur de recherche avec un text libre un critère de categorie sous la forme d'une liste deroulante.  
+
+B. Les utilisateur doivent pouvoir s'authentifier :
+Si un utilisateur n'est pas authentifier il ne pourrat pas acheter des produit et ne pourrat pas les enregistrer 
+dans son panier.
+Si il est authentifier il pourrat acheter des produit et ou enregistrer des produit qu'il pourrat 
+acheter plus tard.
+
+C. Les article :  
+Les article seront representer sous la forme d'une image, de son nom, de sa reference, de son prix, et de sa description, 
+d'un bouton ajouter au panier, d'un bouton acheter, par categorie.
+
+D. Chiffre d'affaire :
+-------------------------
+On souhaite calculer le chiffre d'affaire
+
+E. Prix des produit :
+-------------------------
+Les composant et les PC :
+RAM : 150 euros
+Processeur : 350 euros
+disque dur 1 To : 500 euros
+carte mere : 650 euros
+tour PC bureau : 1200 euros
+Ecran PC bureau : 1100 euros
+PC portable : 1400 euros
+
+Console :
+PS4 : 200 euros
+Ps5 : 500 euros
+Xbox one : 200 euros
+Xbox series s : 250 euros
+Xbox series x : 500 euros
+Les jeu couteront entre 50 et 100 euros.
+
+électroménager :
+Machine a laver : 1500 euros
+lave-vaisselle : 1200 euros
+seche linge : 1400 euros
+aspirateur : 1100 euros
+
+Gestion des profil :
+--------------------
+Client : 
+Le profil Client peut :
+- consulter les articles.
+- mettre des articles dans son panier.
+
+Vendeur :
+le profil vendeur peut :
+- consulter le catalogue des articles
+- modifier les prix pour sa categorie d'articles
+- retirer des articles en cas de rupture de stocke
+
+Admin :
+- accès a toute les fonctionnalité de l'application
+- consulter, ajouter, modifier, supprimer des articles
+- il peut modifier les profil des utilisateur
+- il peut consulter la page du chiffre d'affaire.
+
+2. Conception de la base de donnée :
+--------------------------------------
+On souhaite gerer en base de donnée les utilisateur, les profil, les article, les categorie des articles 
+et on souhaite stocké le contenu du panier des utilisateur authentifier.
+On veut stocké le nom des utilisateur, le prenom, l'adresse, l'email, numero de telephone, 
+le mot de passe le profil de l'utilisateur. Les articles 
+le nom de l'article, la prix de l'article, la description de l'article. 
+Les categorie des article, materiel informatique, console et jeu, électroménager, les jeu compatible pour chaque console.
+une commande est caracteriser par une date et un client et un panier qui contient une liste de produit avec la quantité 
+pour chaque produit. 
+
+Les tables :
+
+utilisateur :
+- id de l'utilisateur
+- nom de l'utilisateur
+- prenom de l'utilisateur
+- email de l'utilisateur
+- adresse de l'utilisateur
+- numero de telephone de l'utilisateur
+- mot de passe de l'utilisateur
+- panier de l'utilisateur
+
+profil :
+- id du profil
+- nom du profil
+
+Categorie : 
+- id de la categorie
+
+Les article :
+- id de l'article
+- nom de l'article
+- reference de l'article
+- prix de l'article
+- description de l'article
+
+panier :
+- id du panier associé a un client
+
+
+
+
+
+
+
