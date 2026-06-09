@@ -1,4 +1,4 @@
-<h1>Bienveu sur le site ElectroMania</h1>
+<h1>Bienvenu sur le site ElectroMania</h1>
     <div class="container-fluid py-4">
         <div class="row mb-4">
             <div class="col-md-8">
@@ -25,7 +25,7 @@
 			
 			<td><?=$cat_id?></td>
 			<td><?=$cat_libelle?></td>
-            <td><img src="_images/image<?=$cat_id?>.jfif" width="300" /></td>
+            <td><a href="<?= hlien('article', 'index', 'id', $cat_id) ?>"><img src="_images/image<?=$cat_id?>.jfif" width="300" /></a></td>
             <td class="text-center">
                 <a class="btn btn-sm btn-info" href="<?=hlien("categorie","show","id",$cat_id)?>" title="Voir">
                     <i class="bi bi-eye"></i>
