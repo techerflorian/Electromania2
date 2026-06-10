@@ -31,7 +31,6 @@ class Ctr__default extends Ctr_controleur {
     }
 
 
-
 }
 
 ?>

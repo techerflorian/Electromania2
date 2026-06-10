@@ -72,6 +72,12 @@ class Ctr_article extends Ctr_controleur implements I_crud {
 		}
 		header("location:" . hlien("article"));
 	}
+
+	public function a_catalogue() {
+        $u=new Article();
+        $data=$u->selectArticleByCategorie($_GET["id"]);
+        require $this->gabarit;
+    }
 }
 
 ?>
