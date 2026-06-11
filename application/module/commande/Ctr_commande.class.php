@@ -76,6 +76,9 @@ class Ctr_commande extends Ctr_controleur implements I_crud {
 	function a_panier() {
 		$u=new Commande();
 		$data=$u->selectPanierByUtilisateur($_GET["id"]);
+		$commande=Commande::selectCommande($_GET["id"]);
+		$totale=Commande::montantTotale($_GET["id"]);
+		extract(array_map("mhe",$commande));
 		require $this->gabarit;
 	}
 

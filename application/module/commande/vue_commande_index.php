@@ -39,7 +39,7 @@
 			<td><?=$com_id?></td>
 			<td><?=$com_date?></td>
 			<td><?=$uti_nom?></td>
-            <td><a href="<?= hlien("commande", "panier", "id", $com_utilisateur) ?>" >Panier</a></td>
+            <td><a href="<?= hlien("commande", "panier", "id", $com_id) ?>" >Panier</a></td>
             <td class="text-center">
                 <a class="btn btn-sm btn-info" href="<?=hlien("commande","show","id",$com_id)?>" title="Voir">
                     <i class="bi bi-eye"></i>

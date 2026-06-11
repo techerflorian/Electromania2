@@ -43,7 +43,6 @@
 			<td><?=$art_nom?></td>
 			<td><?=$art_prix?></td>
 			<td><?=$art_description?></td>
-            <td><?=$art_categorie?></td>
 			<td><?=$cat_libelle?></td>
             <td class="text-center">
                 <a class="btn btn-sm btn-info" href="<?=hlien("article","show","id",$art_id)?>" title="Voir">

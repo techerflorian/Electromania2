@@ -5,3 +5,6 @@
 5.dans le formulaire de creation d'une commande modifier le champs com_utilisateur en liste deroulante. (terminé)
 6. masquer le lien contenir. (terminé)
 7 dans commande index masquer le bouton edit. (terminé)
+
+dans  la page commande panier id=id de la commande afficher les information de la commande (date, le nom de l'utilisateur et l'id de la commande) et calculer le montant totale de la commande (faire une requete sql) (terminé)
+en dessous afficher le panier (le nom de l'article la quantite le prix unitaire et le montant totale) (faire une requete sql) (terminé)

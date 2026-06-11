@@ -18,12 +18,12 @@
                         </div>
                         <div class='mb-3'>
                             <label for='art_prix' class='form-label'>Art_prix <span class='text-danger'>*</span></label>                            
-                            <input id='art_prix' name='art_prix' type='number' size='80' value='<?=$art_prix?>'  class='form-control' required />
+                            <input id='art_prix' name='art_prix' type='number' size='80' value='<?=$art_prix?>' step="0.01" class='form-control' required />
                             <small class='form-text text-muted'>aide à la saisie</small>
                         </div>
                         <div class='mb-3'>
                             <label for='art_description' class='form-label'>Art_description <span class='text-danger'>*</span></label>                            
-                            <textarea id='art_description' name='art_description' size='80' value='<?=$art_description?>'  class='form-control' required></textarea>
+                            <textarea id='art_description' name='art_description' size='80'  class='form-control' required><?= $art_description?></textarea>
                             <small class='form-text text-muted'>aide à la saisie</small>
                         </div>
                         <div class='mb-3'>

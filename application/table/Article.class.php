@@ -16,7 +16,7 @@ class Article extends Table {
 	public function selectArticleByCategorie($id) {
 		$sql="select * from article, categorie where art_categorie=cat_id and cat_id=:id";
 		$statement = self::$link->prepare($sql);
-		$statement->bindValue(":id", $cat_id);
+		$statement->bindValue(":id", $id);
 		$statement->execute();
 		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	}
