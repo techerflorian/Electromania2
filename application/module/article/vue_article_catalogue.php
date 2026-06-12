@@ -8,6 +8,11 @@
                     <i class="bi bi-plus-circle"></i> New article
                 </a>
             </div>
+            <div class="col-md-4 text-end">
+                <a class="btn btn-primary" href="<?=hlien("article","recherche")?>">
+                    <i class="bi bi-plus-circle"></i> Rechercher
+                </a>
+            </div>
         </div>
 
 
@@ -22,7 +27,6 @@
     <table class="table table-striped table-hover">
         <thead class="table-dark">
 			<tr>
-				
 			<th>art_id</th>
             <th>Article</th>
 			<th>art_nom</th>

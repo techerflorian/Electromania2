@@ -78,6 +78,12 @@ class Ctr_article extends Ctr_controleur implements I_crud {
         $data=$u->selectArticleByCategorie($_GET["id"]);
         require $this->gabarit;
     }
+
+	function a_recherche() {
+		$u=new Article();
+		$data=$u->rechercherArticle($mot);
+		require $this->gabarit;
+	}
 }
 
 ?>
