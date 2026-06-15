@@ -40,6 +40,10 @@ class Commande extends Table {
 		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	public function ajouterAuPanier() {
+		$sql="";
+	}
+
 	public function selectAll() : array {
 		$sql="select * from commande, utilisateur where com_utilisateur=uti_id";
 		$statement = self::$link->prepare($sql);

@@ -87,6 +87,11 @@ class Ctr_commande extends Ctr_controleur implements I_crud {
 		$data=$u->selectCommandeByUtilisateur($_GET["id"]);
 		require $this->gabarit;
 	}
+
+	function a_ajouteraupanier() {
+		$u=new Commande();
+		
+	}
 }
 
 ?>

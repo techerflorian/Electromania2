@@ -74,6 +74,11 @@
 			<td><?=$art_description?></td>
 			<td><?=$cat_libelle?></td>
             <td class="text-center">
+                <a class="btn btn-sm btn-info" href="<?=hlien("commande","ajouteraupanier","id",$com_id)?>" title="Ajouter au panier">
+                    <i class="bi bi-eye"></i>
+                </a>
+            </td>
+            <td class="text-center">
                 <a class="btn btn-sm btn-info" href="<?=hlien("article","show","id",$art_id)?>" title="Voir">
                     <i class="bi bi-eye"></i>
                 </a>
