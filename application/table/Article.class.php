@@ -21,10 +21,11 @@ class Article extends Table {
 		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	public function rechercherArticle($mot) {
-		$sql="select * from article, categorie where art_categorie=cat_id and art_nom Like :mot";
+	public function rechercherArticle($mot, $id) {
+		$sql="select * from article, categorie where art_categorie=cat_id and art_nom Like :mot and cat_id=:id";
 		$statement = self::$link->prepare($sql);
-		$statement->bindValue(":mot", $mot);
+		$statement->bindValue(":mot", $mot.'%');
+		$statement->bindValue(":id", $id);
 		$statement->execute();
 		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	}
