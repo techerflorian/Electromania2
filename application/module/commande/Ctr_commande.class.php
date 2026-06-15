@@ -89,8 +89,9 @@ class Ctr_commande extends Ctr_controleur implements I_crud {
 	}
 
 	function a_ajouteraupanier() {
-		$u=new Commande();
-		
+		$u=new Contenir();
+		$data=$u->save($_POST);
+		require $this->gabarit;	
 	}
 }
 
