@@ -3,11 +3,6 @@
             <div class="col-md-8">
                 <h2><i class="bi bi-book"></i> Panier</h2>
             </div>
-            <div class="col-md-4 text-end">
-                <a class="btn btn-primary" href="<?=hlien("commande","ajouteraupanier","id",$com_id)?>">
-                    <i class="bi bi-plus-circle"></i> Ajouter au panier
-                </a>
-            </div>
         </div>
 
         <p><?= $com_id ?> - <?= $com_date ?> - <?= $uti_nom ?></p>
@@ -59,13 +54,38 @@
                 </table>
             </div>
         <?php } ?>
-        <div class='mb-3'>
-                            <label for='art_nom' class='form-label'>art_nom <span class='text-danger'>*</span></label>                            
-                            <select id='art_nom' name='art_nom' value='<?= $art_nom ?>'  class='form-select' required<?= Table::HTMLselect('select * from article', 'art_id', 'art_nom', $art_nom) ?>></select>
+
+
+            <div class="container-fluid py-4">
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <h2><i class="bi bi-pencil-square"></i> Ajouter au panier</h2>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-md-8">
+                <form method="post" action="<?=hlien("commande","ajouteraupanier", "id", $com_id)?>">
+                    <?= csrfField() ?>
+                        <div class='mb-3'>
+                            <label for='con_article' class='form-label'>art_id <span class='text-danger'>*</span></label>                            
+                            <select id='con_article' name='con_article' value='<?= $con_article ?>'  class='form-select' required<?= Table::HTMLselect('select * from article', 'art_id', 'art_id', $con_article) ?> ></select>
                             <small class='form-text text-muted'>aide à la saisie</small>
                         </div>
                         <div class='mb-3'>
                             <label for='con_quantite' class='form-label'>con_quantite <span class='text-danger'>*</span></label>                            
-                            <input id='con_quantite' name='con_quantite' type='number' size='80' value='<?= $con_quantite ?>'  class='form-control' required />
+                            <input id='con_quantite' name='con_quantite' type="number" size='80' value='<?= $con_quantite ?>'  class='form-control' required />
                             <small class='form-text text-muted'>aide à la saisie</small>
                         </div>
+                        <div class="d-flex gap-2">
+                        <button class="btn btn-success" type="submit" name="btSubmit">
+                            <i class="bi bi-check-circle"></i> Ajouter au panier
+                        </button>
+                        <button class="btn btn-secondary" type="button" onclick="history.back()">
+                            <i class="bi bi-x-circle"></i> Annuler
+                        </button>
+                    </div>
+                </form>              
+            </div>
+        </div>
+    </div>
