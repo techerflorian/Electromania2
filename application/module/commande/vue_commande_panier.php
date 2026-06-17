@@ -67,6 +67,8 @@
             <div class="col-md-8">
                 <form method="post" action="<?=hlien("commande","ajouteraupanier", "id", $com_id)?>">
                     <?= csrfField() ?>
+                    <input type="hidden" name="com_id" id="com_id" value="<?= $com_id ?>" />
+
                         <div class='mb-3'>
                             <label for='con_article' class='form-label'>art_id <span class='text-danger'>*</span></label>                            
                             <select id='con_article' name='con_article' value='<?= $con_article ?>'  class='form-select' required<?= Table::HTMLselect('select * from article', 'art_id', 'art_id', $con_article) ?> ></select>

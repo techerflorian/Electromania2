@@ -40,6 +40,14 @@ class Commande extends Table {
 		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	static public function selectPanierByCommande($id) {
+		$sql="select * from commande, contenir, article where con_article=art_id and con_commande=com_id and con_commande=:id";
+		$statement = self::$link->prepare($sql);
+		$statement->bindValue(":id", $id);
+		$statement->execute();
+		return $statement->fetchAll(PDO::FETCH_ASSOC);
+	}
+
 	public function selectAll() : array {
 		$sql="select * from commande, utilisateur where com_utilisateur=uti_id";
 		$statement = self::$link->prepare($sql);
