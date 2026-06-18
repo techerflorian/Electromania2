@@ -48,6 +48,7 @@
 			<td><?=$art_prix?></td>
 			<td><?=$art_description?></td>
 			<td><?=$cat_libelle?></td>
+            <?php if (isset($_SESSION["uti_profil"]) and $_SESSION["uti_profil"]==3) { ?>
             <td class="text-center">
                 <a class="btn btn-sm btn-info" href="<?=hlien("article","show","id",$art_id)?>" title="Voir">
                     <i class="bi bi-eye"></i>
@@ -59,6 +60,7 @@
                     <i class="bi bi-trash"></i>
                 </a>
             </td>
+            <?php } ?>
 		</tr>
 		<?php } ?>
 		</tbody>
