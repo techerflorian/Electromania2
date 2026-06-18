@@ -83,9 +83,24 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 	function a_panier()
 	{
 		$u = new Commande();
-		$data = $u->selectPanierByCommande($_GET["id"]);
-		$commande = Commande::selectCommande($_GET["id"]);
-		$totale = Commande::montantTotale($_GET["id"]);
+		$com_id = 0;
+		$data = [];
+		$commande = [];
+		$totale = ["totale" => 0];
+
+		if (isset($_SESSION["uti_id"]) && $_SESSION["uti_id"]) {
+			$commandes = Commande::selectCommandeByUtilisateur($_SESSION["uti_id"]);
+			if (!empty($commandes) && isset($commandes[0]["com_id"])) {
+				$com_id = $commandes[0]["com_id"];
+			}
+		}
+
+		if ($com_id > 0) {
+			$data = $u->selectPanierByCommande($com_id);
+			$commande = Commande::selectCommande($com_id);
+			$totale = Commande::montantTotale($com_id);
+		}
+
 		extract(array_map("mhe", $commande));
 		require $this->gabarit;
 	}

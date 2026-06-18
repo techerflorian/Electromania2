@@ -15,7 +15,7 @@
 <li><a class='nav-link' href='<?=hlien("profil","index")?>'>Profil</a></li>
 <li><a class='nav-link' href='<?=hlien("utilisateur","index")?>'>Utilisateur</a></li>
 <?php } else if (isset($_SESSION["uti_id"]) and $_SESSION["uti_profil"]==1) { ?>
-<li><a class='nav-link' href='<?=hlien("commande","panier","id",$com_id)?>'>Commande</a></li>
+<li><a class='nav-link' href='<?=hlien("commande","panier")?>'>Commande</a></li>
       </ul>
       <?php } ?>
       <ul class="navbar-nav ml-auto">
