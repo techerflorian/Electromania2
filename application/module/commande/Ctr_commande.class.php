@@ -84,6 +84,8 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 	{
 		$u = new Commande();
 		$com_id = 0;
+		$com_date = "";
+		$uti_nom = "";
 		$data = [];
 		$commande = [];
 		$totale = ["totale" => 0];
