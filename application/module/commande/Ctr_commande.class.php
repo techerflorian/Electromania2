@@ -73,9 +73,11 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 	function a_delete()
 	{
 		if (isset($_GET["id"])) {
+			if ($com_statut=="en cours") {
 			$u = new Commande();
 			$u->delete($_GET["id"]);
 			$_SESSION["message"][] = "L'enregistrement Commande a bien été supprimé.";
+			}
 		}
 		header("location:" . hlien("commande"));
 	}
@@ -85,6 +87,7 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 		$u = new Commande();
 		$com_id = 0;
 		$com_date = "";
+		$sta_nom="";
 		$uti_nom = "";
 		$data = [];
 		$commande = [];

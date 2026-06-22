@@ -32,6 +32,11 @@
                             <small class='form-text text-muted'>aide à la saisie</small>
                         </div>
                         <div class='mb-3'>
+                            <label for='sta_nom' class='form-label'>sta_nom <span class='text-danger'>*</span></label>                            
+                            <select id='sta_nom' name='sta_nom' value='<?= $sta_nom ?>'  class='form-select' required<?= Table::HTMLselect('select * from statut', 'sta_id', 'sta_nom', $sta_nom) ?>></select> 
+                            <small class='form-text text-muted'>aide à la saisie</small>
+                        </div>
+                        <div class='mb-3'>
                             <label for='com_utilisateur' class='form-label'>com_utilisateur <span class='text-danger'>*</span></label>                            
                             <select id='com_utilisateur' name='com_utilisateur'  class='form-select'> required<?=Table::HTMLselect('select * from utilisateur', 'uti_id', 'uti_nom', $com_utilisateur)?></select>
                             <small class='form-text text-muted'>aide à la saisie</small>

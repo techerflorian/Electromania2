@@ -43,13 +43,22 @@ drop table if exists categorie;
 create table categorie (
 	cat_id int not null auto_increment primary key,
 	cat_libelle varchar(100) not null
+)engine=innodb;
+
+-- table statut
+drop table if exists statut;
+create table statut (
+	sta_id int not null auto_increment primary key,
+	sta_nom varchar(50) not null
 )engine=innodb; 
+
 
 -- table commande
 drop table if exists commande;
 create table commande (
 	com_id int not null auto_increment primary key,
 	com_date datetime not null,
+	com_statut varchar(50) not null,
 	com_utilisateur int not null
 )engine=innodb; 
 

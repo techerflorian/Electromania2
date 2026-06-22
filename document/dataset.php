@@ -50,6 +50,19 @@ for ($i = 1; $i <= $nbarticle; $i++) {
 mysqli_query($link, $sql . implode(",", $tab));
 echo "table article : $nbarticle <br>";
 
+//table statut
+$nbstatut = 2;
+$_STATUT=["en cours", "valider"];
+$sql = "insert into statut values ";
+$tab = [];
+for ($i = 0; $i < count($_STATUT); $i++) {
+    $nom = $_STATUT[$i];
+    $tab[] = "(null, '$nom')";
+}
+mysqli_query($link, $sql . implode(",", $tab));
+echo "table statut : $nbstatut <br>";
+
+
 //table commande
 $nbcommande = 200;
 $sql = "insert into commande values ";
@@ -59,7 +72,8 @@ for ($i = 1; $i <= $nbcommande; $i++) {
     $ts = mktime(rand(0,23), 0, 0, rand(1,12), 10, 2026);
     $date = date("Y-m-d H:i:s", $ts);
     $utilisateur = rand(1, $nbutilisateur);
-    $tab[] = "(null, '$date', '$utilisateur')";
+    $statut = rand(1, $nbstatut);
+    $tab[] = "(null, '$date', '$utilisateur','$statut')";
 }
 mysqli_query($link, $sql . implode(",", $tab));
 echo "table commande : $nbcommande <br>";

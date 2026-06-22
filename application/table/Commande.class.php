@@ -49,7 +49,7 @@ class Commande extends Table {
 	}
 
 	public function selectAll() : array {
-		$sql="select * from commande, utilisateur where com_utilisateur=uti_id";
+		$sql="select * from commande, utilisateur, statut where com_utilisateur=uti_id and com_statut=sta_id";
 		$statement = self::$link->prepare($sql);
 		$statement->execute();
 		return $statement->fetchAll(PDO::FETCH_ASSOC);

@@ -23,6 +23,7 @@
                             <th>con_quantite</th>
                             <th>art_prix</th>
                             <th>art_description</th>
+                            <th>sta_nom</th>
                             <th>Totale</th>
                             <th class="text-center">Actions</th>
                         </tr>
@@ -36,6 +37,7 @@
                                 <td><?= $con_quantite ?></td>
                                 <td><?= $art_prix ?></td>
                                 <td><?= $art_description ?></td>
+                                <td><?= $sta_nom ?></td>
                                 <td><?= $con_quantite*$art_prix ?></td>
                                 <td class="text-center">
                                     <a class="btn btn-sm btn-info" href="<?= hlien("commande", "show", "id", $com_id) ?>" title="Voir">
