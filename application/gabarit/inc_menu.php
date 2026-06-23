@@ -15,13 +15,14 @@
 <li><a class='nav-link' href='<?=hlien("profil","index")?>'>Profil</a></li>
 <li><a class='nav-link' href='<?=hlien("utilisateur","index")?>'>Utilisateur</a></li>
 <?php } else if (isset($_SESSION["uti_id"]) and $_SESSION["uti_profil"]==1) { ?>
-<li><a class='nav-link' href='<?=hlien("commande","panier")?>'>Commande</a></li>
+<li><a class='nav-link' href='<?=hlien("commande","panier")?>'>Panier</a></li>
+<li><a class='nav-link' href='<?=hlien("commande","commandeparutilisateur","id",$_SESSION["uti_id"])?>'>Mes commandes</a></li>
       </ul>
       <?php } ?>
       <ul class="navbar-nav ml-auto">
         <?php if (isset($_SESSION["uti_id"]) and $_SESSION["uti_id"]) { ?>
         <li><a class="nav-link" href="<?= hlien("authentification", "deconnexion") ?>">Déconnexion</a></li>
-        <li class="p-1 m-2 fw-bold bg-primary text-white"><?= $_SESSION["uti_nom"] . "[" . $_SESSION["uti_profil"] . "]" ?></li>
+        <li class="p-1 m-2 fw-bold bg-primary text-white"><?= $_SESSION["uti_nom"] . "[" . $_SESSION["uti_profil"] . "]" . $_SESSION["com_id"] ?></li>
         <?php } else { ?>
         <li><a class="nav-link" href='<?= hlien("authentification", "connexion") ?>'>Connexion</a></li>
         <li><a class="nav-link" href='<?= hlien("authentification", "inscription") ?>'>Inscription</a></li>

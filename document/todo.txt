@@ -8,3 +8,5 @@
 
 dans  la page commande panier id=id de la commande afficher les information de la commande (date, le nom de l'utilisateur et l'id de la commande) et calculer le montant totale de la commande (faire une requete sql) (terminé)
 en dessous afficher le panier (le nom de l'article la quantite le prix unitaire et le montant totale) (faire une requete sql) (terminé)
+
+dans la fonction connexion d'un utilisateur memoriser en variable de session l'id d'une commande en cours si il n'existe pas cree la commande

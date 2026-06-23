@@ -26,6 +26,7 @@
 			<td><?=$cat_id?></td>
 			<td><?=$cat_libelle?></td>
             <td><a href="<?= hlien("article", "catalogue", "id", $cat_id) ?>"><img src="_images/image<?=$cat_id?>.jfif" width="300" /></a></td>
+            <?php if (isset($_SESSION{"uti_id"}) and $_SESSION["uti_profil"]==3) { ?>
             <td class="text-center">
                 <a class="btn btn-sm btn-info" href="<?=hlien("categorie","show","id",$cat_id)?>" title="Voir">
                     <i class="bi bi-eye"></i>
@@ -37,6 +38,7 @@
                     <i class="bi bi-trash"></i>
                 </a>
             </td>
+            <?php } ?>
 		</tr>
 		<?php } ?>
 		</tbody>

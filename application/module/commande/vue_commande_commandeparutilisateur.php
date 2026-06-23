@@ -25,6 +25,7 @@
 				
 			<th>com_id</th>
 			<th>com_date</th>
+            <th>sta_nom</th>
 			<th>uti_nom</th>
             <th>panier</th>
 				<th class="text-center">Actions</th>
@@ -38,6 +39,7 @@
 			
 			<td><?=$com_id?></td>
 			<td><?=$com_date?></td>
+            <td><?= $sta_nom ?></td>
 			<td><?=$uti_nom?></td>
             <td><a href="<?= hlien("commande", "panier", "id", $uti_id) ?>">Panier</a></td>
             <td class="text-center">

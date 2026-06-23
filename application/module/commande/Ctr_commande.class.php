@@ -115,7 +115,15 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 	function a_commandeparutilisateur()
 	{
 		$u = new Commande();
-		$data = $u->selectCommandeByUtilisateur($_GET["id"]);
+		$com_id=0;
+		$com_date="";
+		$sta_nom="";
+		$uti_nom="";
+		$data=[];
+		$commande = [];
+		
+		if (isset($_SESSION["uti_id"]) and $_SESSION["uti_id"])
+		$data = $u->selectCommandeByUtilisateur($_SESSION["uti_id"]);
 		require $this->gabarit;
 	}
 

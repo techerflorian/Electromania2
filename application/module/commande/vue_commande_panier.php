@@ -55,7 +55,7 @@
             </div>
         <?php } ?>
 
-
+        <?php if (!empty($data)) { ?>
             <div class="container-fluid py-4">
         <div class="row mb-4">
             <div class="col-md-8">
@@ -91,3 +91,4 @@
             </div>
         </div>
     </div>
+    <?php } ?>

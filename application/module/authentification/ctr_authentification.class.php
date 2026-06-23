@@ -102,6 +102,13 @@ class Ctr_authentification extends Ctr_controleur
             $_SESSION["uti_prenom"]=$uti_prenom;
             $_SESSION["uti_email"]=$uti_email;
             $_SESSION["uti_profil"]=$uti_profil;
+            $data=Commande::selectCommandeByUtilisateurConnecter();
+            if ($data==false) {
+                //crée une commande au statut en cours récuperer l'id de cet commande et le memoriser en variable de session 
+                $_SESSION["com_id"]=0;
+            } else {
+                $_SESSION["com_id"]=$data[0]["com_id"];
+            }
             $_SESSION["message"][]="bienvenu $uti_prenom $uti_nom.";
             // 🔐 RENOUVELER LE TOKEN CSRF APRÈS CONNEXION
             renewCsrf();
