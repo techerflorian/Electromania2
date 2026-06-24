@@ -96,7 +96,7 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 		$totale = ["totale" => 0];
 
 		if (isset($_SESSION["uti_id"]) && $_SESSION["uti_id"]) {
-			$commandes = Commande::selectCommandeByUtilisateur($_SESSION["uti_id"]);
+			$commandes = Commande::selectCommandeByUtilisateurConnecter($_SESSION["uti_id"]);
 			if (!empty($commandes) && isset($commandes[0]["com_id"])) {
 				$com_id = $commandes[0]["com_id"];
 			}
@@ -123,7 +123,7 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 		$commande = [];
 		
 		if (isset($_SESSION["uti_id"]) and $_SESSION["uti_id"])
-		$data = $u->selectCommandeByUtilisateur($_SESSION["uti_id"]);
+		$data = $u->selectCommandeByUtilisateurConnecter($_SESSION["uti_id"]);
 		require $this->gabarit;
 	}
 
