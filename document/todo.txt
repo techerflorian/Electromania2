@@ -10,3 +10,8 @@ dans  la page commande panier id=id de la commande afficher les information de l
 en dessous afficher le panier (le nom de l'article la quantite le prix unitaire et le montant totale) (faire une requete sql) (terminé)
 
 dans la fonction connexion d'un utilisateur memoriser en variable de session l'id d'une commande en cours si il n'existe pas cree la commande
+
+module commande action edit : formulaire avec la date et le statut
+et en dessous le panier (pour chaque article son nom et sa quantite et deux bouton supprimer du panier et modifier la quantite )
+
+dans commande action editquantite dans la fonction header trouver l'id de la commande.

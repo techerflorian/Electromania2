@@ -25,10 +25,13 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 	{
 		$id = isset($_GET["id"]) ? $_GET["id"] : 0;
 		$u = new Commande();
-		if ($id > 0)
+		if ($id > 0) {
 			$row = $u->select($id);
-		else
+			$panier = Commande::selectPanierByCommande($id);
+		} else {
+			$panier = [];
 			$row = $u->emptyRecord();
+		}
 
 		extract(array_map("mhe", $row));
 		require $this->gabarit;
@@ -73,14 +76,14 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 	function a_delete()
 	{
 		if (isset($_GET["id"])) {
-			if ($com_statut==1) {
-			$u = new Commande();
-			$u->delete($_GET["id"]);
-			$_SESSION["message"][] = "L'enregistrement Commande a bien été supprimé.";
+			if ($com_statut == 1) {
+				$u = new Commande();
+				$u->delete($_GET["id"]);
+				$_SESSION["message"][] = "L'enregistrement Commande a bien été supprimé.";
 			} else {
 				$_SESSION["message"][] = "L'enregistrement Commande ne peut pas etre supprimé.";
 			}
-		} 
+		}
 		header("location:" . hlien("commande"));
 	}
 
@@ -115,15 +118,15 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 	function a_commandeparutilisateur()
 	{
 		$u = new Commande();
-		$com_id=0;
-		$com_date="";
-		$sta_nom="";
-		$uti_nom="";
-		$data=[];
+		$com_id = 0;
+		$com_date = "";
+		$sta_nom = "";
+		$uti_nom = "";
+		$data = [];
 		$commande = [];
-		
+
 		if (isset($_SESSION["uti_id"]) and $_SESSION["uti_id"])
-		$data = $u->selectCommandeByUtilisateurConnecter($_SESSION["uti_id"]);
+			$data = $u->selectCommandeByUtilisateurConnecter($_SESSION["uti_id"]);
 		require $this->gabarit;
 	}
 
@@ -136,9 +139,25 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 			} else {
 				$u = new Contenir();
 				$u->save($_POST);
-					$_SESSION["message"][] = "Le nouvel enregistrement Contenir a bien été créé.";
+				$_SESSION["message"][] = "Le nouvel enregistrement Contenir a bien été créé.";
 			}
 		}
 		header("location:" . hlien("commande", "panier", "id", $_GET["id"]));
+	}
+
+	function a_editquantite()
+	{
+		$id = isset($_GET["id"]) ? $_GET["id"] : 0;
+		if (isset($_POST["btSubmit"])) {
+			$u = new Contenir();
+			$u->save($_POST);
+			header("location:" . hlien("commande", "index"));
+		} else {
+			$u = new Contenir();
+			$row = $u->select($id);
+			if ($row != false)
+				extract(array_map("mhe", $row));
+			require $this->gabarit;
+		}
 	}
 }

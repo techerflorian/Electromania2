@@ -104,8 +104,14 @@ class Ctr_authentification extends Ctr_controleur
             $_SESSION["uti_profil"]=$uti_profil;
             $data=Commande::selectCommandeByUtilisateurConnecter();
             if ($data==false) {
-                //crée une commande au statut en cours récuperer l'id de cet commande et le memoriser en variable de session 
-                $_SESSION["com_id"]=0;
+                $row=[];
+                $row["com_id"]=0;
+                $row["com_date"]=date("Y-m-d H:i:s");
+                $row["com_statut"]=1;
+                $row["com_utilisateur"]=$_SESSION["uti_id"];
+                //crée une commande au statut en cours récuperer l'id de cet commande et le memoriser en variable de session
+                $commande=new Commande();
+                $_SESSION["com_id"]=$commande->save($row);
             } else {
                 $_SESSION["com_id"]=$data[0]["com_id"];
             }

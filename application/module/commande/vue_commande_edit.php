@@ -17,21 +17,6 @@
                             <small class='form-text text-muted'>aide à la saisie</small>
                         </div>
                         <div class='mb-3'>
-                            <label for='art_nom' class='form-label'>art_nom <span class='text-danger'>*</span></label>                            
-                            <input id='art_nom' name='art_nom' type='text' size='80' value=''  class='form-control' required />
-                            <small class='form-text text-muted'>aide à la saisie</small>
-                        </div>
-                        <div class='mb-3'>
-                            <label for='art_prix' class='form-label'>art_prix <span class='text-danger'>*</span></label>                            
-                            <input id='art_prix' name='art_prix' type='number' size='80' value=''  class='form-control' required />
-                            <small class='form-text text-muted'>aide à la saisie</small>
-                        </div>
-                        <div class='mb-3'>
-                            <label for='art_description' class='form-label'>art_description <span class='text-danger'>*</span></label>                            
-                            <textarea id='art_description' name='art_description' size='80' value=''  class='form-control' required></textarea>
-                            <small class='form-text text-muted'>aide à la saisie</small>
-                        </div>
-                        <div class='mb-3'>
                             <label for='com_statut' class='form-label'>com_statut <span class='text-danger'>*</span></label>                            
                             <select id='com_statut' name='com_statut' value='<?= $com_statut ?>'  class='form-select' required<?= Table::HTMLselect('select * from statut', 'sta_id', 'sta_nom', $com_statut) ?>></select> 
                             <small class='form-text text-muted'>aide à la saisie</small>
@@ -53,3 +38,51 @@
             </div>
         </div>
     </div>
+
+    <div class="container-fluid py-4">
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <h2><i class="bi bi-book"></i> Panier</h2>
+            </div>
+        </div>
+
+        <p><?= $com_id ?> - <?= $com_date ?> - <?= $com_utilisateur ?></p>
+
+
+        <?php if (empty($panier)) { ?>
+            <div class="alert alert-info text-center py-5">
+                <h4>📭 Aucun(e) commande</h4>
+            </div>
+        <?php } else { ?>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>art_nom</th>
+                            <th>con_quantite</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($panier as $row) {
+                            extract(array_map("mhe", $row)); ?>
+                            <tr>
+                                <td><?= $art_nom ?></td>
+                                <td><?= $con_quantite ?></td>
+                                <td><?= $con_quantite*$art_prix ?></td>
+                                <td class="text-center">
+                                    <a class="btn btn-sm btn-warning" href="<?= hlien("commande", "editquantite", "id", $con_id) ?>" title="Modifier">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a class="btn btn-sm btn-danger" href="<?= hlien("commande", "delete", "id", $con_id) ?>" onclick="return confirm('Êtes-vous sûr ?');" title="Supprimer">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+            <?php } ?>
