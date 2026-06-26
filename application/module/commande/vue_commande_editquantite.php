@@ -7,7 +7,7 @@
     
         <div class="row">
             <div class="col-md-8">
-                <form method="post" action="<?=hlien("commande","editquantite")?>">
+                <form method="post">
                     <?= csrfField() ?>
                     <input type="hidden" name="con_id" id="con_id" value="<?= $id ?>" />
                     

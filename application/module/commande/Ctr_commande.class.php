@@ -151,7 +151,8 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 		if (isset($_POST["btSubmit"])) {
 			$u = new Contenir();
 			$u->save($_POST);
-			header("location:" . hlien("commande", "index"));
+			
+			header("location:" . hlien("commande", "edit", "id", $_GET["com_id"]));
 		} else {
 			$u = new Contenir();
 			$row = $u->select($id);

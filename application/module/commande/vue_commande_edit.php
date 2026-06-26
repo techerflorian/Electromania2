@@ -73,7 +73,7 @@
                                 <td><?= $con_quantite ?></td>
                                 <td><?= $con_quantite*$art_prix ?></td>
                                 <td class="text-center">
-                                    <a class="btn btn-sm btn-warning" href="<?= hlien("commande", "editquantite", "id", $con_id) ?>" title="Modifier">
+                                    <a class="btn btn-sm btn-warning" href="<?= hlien("commande", "editquantite", "id", $con_id, "com_id", $id) ?>" title="Modifier">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <a class="btn btn-sm btn-danger" href="<?= hlien("commande", "delete", "id", $con_id) ?>" onclick="return confirm('Êtes-vous sûr ?');" title="Supprimer">
