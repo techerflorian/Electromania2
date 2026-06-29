@@ -1,0 +1,355 @@
+Rapport d'audit pedagogique du projet ElectroMania
+==================================================
+
+Cadre de l'audit
+----------------
+
+Ce projet doit etre lu comme un projet pedagogique de stage d'ecole, pas comme
+un projet client livre en production.
+
+La source de verite pour l'audit est le framework fourni :
+- architecture MVC ;
+- controleur principal www/index.php ;
+- URL sous la forme index.php?m=<module>&a=<action> ;
+- controleurs secondaires dans application/module/<module> ;
+- vues nommees vue_<module>_<action>.php ;
+- requetes SQL dans application/table ;
+- classes Table heritees de framework/Table.class.php ;
+- controleurs CRUD implementant I_crud ;
+- utilisation du gabarit commun ;
+- adaptation des vues generees par le generateur ;
+- authentification adaptee aux champs de la table utilisateur ;
+- droits d'acces avec checkAuth() et checkAllow() quand les modules sont reserves.
+
+Le cahier des charges reste utile pour savoir quel theme appliquer au projet
+ElectroMania, mais il ne doit pas etre juge comme une specification client
+complete. Il sert surtout de support pour pratiquer le framework.
+
+
+Verdict pedagogique
+-------------------
+
+Le projet est une bonne base pedagogique avec le framework.
+
+Les conventions principales sont respectees : structure MVC, modules, actions,
+vues, classes Table, CRUD, gabarit, recherche, authentification et panier.
+
+Le projet n'est pas "termine", mais il est deja exploitable pour montrer :
+- la generation et l'adaptation de CRUD ;
+- les jointures pour afficher des libelles a la place des ids ;
+- la creation d'actions personnalisees ;
+- la gestion d'une session utilisateur ;
+- la construction progressive d'un panier.
+
+Les corrections a faire ne remettent pas en cause la base du projet. Elles
+servent surtout a rendre l'exercice coherent avec les regles du framework.
+
+
+Ce qui est conforme au framework
+--------------------------------
+
+- Le controleur principal www/index.php charge la configuration puis instancie
+  le controleur demande avec les parametres m et a.
+- Les modules sont bien places dans application/module.
+- Les controleurs suivent la convention Ctr_<module>.
+- Les actions suivent la convention a_<action>().
+- Les vues suivent globalement la convention vue_<module>_<action>.php.
+- Les controleurs CRUD principaux implementent I_crud.
+- Les classes de table heritent de Table.
+- Les requetes specifiques sont placees dans application/table.
+- Les vues passent par le gabarit commun.
+- Les formulaires utilisent souvent csrfField().
+- L'authentification utilise password_hash() et password_verify().
+- Les methodes estEmailUnique() et selectByEmail() ont bien ete adaptees dans
+  Utilisateur.class.php, comme le demande la procedure du framework.
+- Les cles etrangeres sont deja ameliorees a plusieurs endroits :
+  - les commandes affichent le nom de l'utilisateur ;
+  - les articles affichent le libelle de categorie ;
+  - les utilisateurs affichent le nom du profil.
+- Des actions personnalisees ont ete ajoutees :
+  - article/catalogue ;
+  - article/recherche ;
+  - commande/panier ;
+  - commande/commandeparutilisateur ;
+  - commande/ajouteraupanier ;
+  - commande/editquantite.
+
+
+Ce qui est deja fait pour le sujet ElectroMania
+-----------------------------------------------
+
+- Page d'accueil avec les categories.
+- Images cliquables pour aller vers un catalogue de categorie.
+- Catalogue d'articles par categorie.
+- Recherche d'article par mot et categorie.
+- Authentification utilisateur.
+- Creation d'une commande en cours a la connexion, dans l'intention.
+- Affichage du panier avec nom d'article, quantite, prix unitaire et total.
+- CRUD d'administration pour les articles, categories, commandes, profils et
+  utilisateurs.
+- Menu adapte selon certains profils.
+
+
+Points a corriger selon la source de verite du framework
+--------------------------------------------------------
+
+1. Nom du script SQL et action creerbdd
+
+Dans le framework, l'action _default/creerbdd cherche le fichier :
+
+document/<DB_BDD>.sql
+
+Avec DB_BDD=electromania, le fichier attendu est donc :
+
+document/electromania.sql
+
+Or le projet contient :
+
+document/script_base_electromania.sql
+
+Ce n'est pas bloquant si la base est creee manuellement, mais ce n'est pas
+coherent avec le fonctionnement prevu par le framework.
+
+
+2. Inscription a adapter aux champs reels de la table utilisateur
+
+La procedure du framework demande d'adapter la vue d'inscription aux champs de
+la table utilisateur.
+
+Actuellement, le formulaire d'inscription ne demande pas :
+- uti_adresse ;
+- uti_numero_telephone.
+
+Pourtant ces champs sont obligatoires dans le script SQL.
+
+Autre point : le controleur met :
+
+uti_profil = "user"
+
+alors que la table utilisateur attend un id de profil numerique.
+
+Correction pedagogique attendue :
+- ajouter les champs manquants au formulaire ;
+- enregistrer un profil client valide, par exemple 1 si le profil client est
+  l'id 1 ;
+- garder une logique coherente entre les valeurs stockees en session et les
+  valeurs testees dans le menu et les controleurs.
+
+Fichiers concernes :
+- application/module/authentification/vue_authentification_inscription.php
+- application/module/authentification/ctr_authentification.class.php
+- document/script_base_electromania.sql
+- document/dataset.php
+
+
+3. Gestion des profils a harmoniser
+
+Le framework montre une logique de droits avec checkAllow().
+
+Dans ce projet, le menu teste surtout des ids numeriques :
+- 1 pour utilisateur/client ;
+- 3 pour admin.
+
+Mais certaines procedures du framework parlent plutot de noms de profils, par
+exemple "admin" ou "user".
+
+Les deux approches peuvent fonctionner dans un exercice, mais il faut choisir
+une seule convention et l'appliquer partout.
+
+Correction pedagogique attendue :
+- soit utiliser les ids de profils partout ;
+- soit stocker le nom du profil en session et utiliser checkAllow(["admin"]) ;
+- eviter de melanger "user", 1 et 3 dans la meme logique.
+
+
+4. Droits d'acces seulement masques dans le menu
+
+Les fonctions checkAuth() et checkAllow() existent dans framework/fonction.php.
+
+Elles ne sont pas appelees dans les controleurs applicatifs.
+
+Dans le cadre du framework, masquer un lien dans inc_menu.php est une premiere
+etape, mais la procedure pedagogique demande aussi de proteger les controleurs.
+
+Correction pedagogique attendue :
+- ajouter checkAllow(...) dans les constructeurs ou actions reservees ;
+- proteger les modules admin comme article, categorie, commande, profil et
+  utilisateur ;
+- proteger le panier avec checkAuth().
+
+
+5. Commande en cours mal filtree
+
+La methode selectCommandeByUtilisateurConnecter() recupere une commande au
+statut "en cours", mais ne filtre pas l'utilisateur connecte.
+
+Dans un exercice pedagogique, le point important est la coherence de la session :
+le panier de l'utilisateur connecte doit correspondre a sa propre commande.
+
+Correction pedagogique attendue :
+- passer l'id utilisateur a la requete ;
+- ajouter une condition uti_id=:id ou com_utilisateur=:id ;
+- utiliser cette methode de facon coherente dans connexion, panier et liste des
+  commandes utilisateur.
+
+Fichiers concernes :
+- application/table/Commande.class.php
+- application/module/authentification/ctr_authentification.class.php
+- application/module/commande/Ctr_commande.class.php
+
+
+6. Parcours "ajouter au panier" incomplet
+
+L'action commande/ajouteraupanier existe, mais le lien du catalogue ne l'appelle
+pas directement. Il renvoie vers commande/index.
+
+La vue panier contient aussi une faute HTML :
+
+<se lect>
+
+au lieu de :
+
+<select>
+
+Enfin, le formulaire d'ajout au panier est affiche seulement quand le panier
+n'est pas vide, ce qui empeche de commencer un panier vide depuis cette page.
+
+Correction pedagogique attendue :
+- relier le bouton "Ajouter au panier" a la bonne action ;
+- corriger le select HTML ;
+- permettre l'ajout meme si le panier est vide ;
+- verifier que l'article ajoute est bien associe a la commande en cours.
+
+Fichiers concernes :
+- application/module/article/vue_article_catalogue.php
+- application/module/commande/vue_commande_panier.php
+- application/module/commande/Ctr_commande.class.php
+
+
+7. Suppression d'une ligne du panier
+
+Dans la page de modification de commande, le bouton supprimer d'une ligne du
+panier appelle commande/delete.
+
+Or une ligne de panier correspond a la table contenir, pas a la table commande.
+
+Correction pedagogique attendue :
+- soit appeler contenir/delete ;
+- soit creer une action commande/supprimerdupanier ;
+- supprimer l'enregistrement con_id dans la table contenir.
+
+Fichier concerne :
+- application/module/commande/vue_commande_edit.php
+
+
+8. Dataset a rendre coherent avec le schema
+
+Dans document/dataset.php, l'insertion des commandes semble inverser :
+- com_statut ;
+- com_utilisateur.
+
+La table commande est declaree dans cet ordre :
+- com_id ;
+- com_date ;
+- com_statut ;
+- com_utilisateur.
+
+Mais le dataset insere :
+- date ;
+- utilisateur ;
+- statut.
+
+Correction pedagogique attendue :
+- inverser les deux valeurs dans le dataset ;
+- ou mieux, utiliser une insertion avec les noms de colonnes.
+
+
+Elements du cahier des charges a traiter apres le socle framework
+-----------------------------------------------------------------
+
+Ces points ne sont pas les premiers criteres de validation du framework, mais
+ils restent utiles si le sujet ElectroMania doit etre plus complet.
+
+Deja partiellement couvert :
+- categories principales ;
+- catalogue ;
+- recherche ;
+- authentification ;
+- panier ;
+- commandes ;
+- administration CRUD.
+
+Encore a ajouter ou ameliorer :
+- reference article ;
+- images propres a chaque article ;
+- bouton "acheter" ;
+- validation de commande ;
+- page ou action de paiement ;
+- calcul du chiffre d'affaires ;
+- role vendeur ;
+- gestion du stock ou retrait d'article ;
+- jeux compatibles avec chaque console ;
+- donnees realistes correspondant aux prix du cahier des charges.
+
+Dans un projet pedagogique, ces elements doivent etre ajoutes progressivement,
+apres avoir stabilise les conventions du framework.
+
+
+Priorites recommandees
+----------------------
+
+1. Remettre le projet en coherence avec le framework :
+   - renommer ou dupliquer le script SQL en electromania.sql ;
+   - corriger le dataset ;
+   - harmoniser les profils ;
+   - adapter completement l'inscription aux champs utilisateur.
+
+2. Corriger le panier :
+   - filtrer la commande en cours par utilisateur ;
+   - brancher correctement "Ajouter au panier" ;
+   - corriger le select HTML ;
+   - supprimer une ligne contenir et non une commande.
+
+3. Ajouter les protections de controleurs :
+   - checkAuth() pour les actions connectees ;
+   - checkAllow() pour les actions admin ou vendeur.
+
+4. Finir les adaptations des vues generees :
+   - remplacer les labels techniques par des labels lisibles ;
+   - retirer les textes d'aide generiques ;
+   - eviter d'afficher les ids quand un libelle est disponible ;
+   - nettoyer les restes du framework dans l'entete si besoin.
+
+5. Completer ensuite les fonctionnalites metier du cahier des charges :
+   - paiement ;
+   - chiffre d'affaires ;
+   - role vendeur ;
+   - stock ;
+   - references et images des articles ;
+   - donnees realistes.
+
+
+Conclusion
+----------
+
+Avec le bon angle pedagogique, le projet n'est pas un echec : il respecte deja
+une grande partie de la structure attendue par le framework.
+
+L'ancien audit etait trop oriente "projet client finalise". Le jugement correct
+est plutot :
+
+Le socle framework est bien compris et deja applique. Il faut maintenant
+stabiliser les incoherences de donnees, le parcours panier, l'inscription et les
+droits d'acces pour que le projet soit propre dans le cadre du stage.
+
+
+Verification effectuee
+----------------------
+
+Un controle de syntaxe PHP a ete lance sur les fichiers du projet lors de
+l'audit precedent.
+
+Aucune erreur de syntaxe PHP n'a ete detectee.
+
+Les points releves sont donc principalement des problemes de coherence avec le
+framework, de logique applicative et d'adaptation pedagogique des vues generees.
