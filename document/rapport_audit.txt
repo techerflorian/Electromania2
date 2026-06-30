@@ -1,355 +1,583 @@
-Rapport d'audit pedagogique du projet ElectroMania
-==================================================
+Rapport d'audit du projet ElectroMania
+======================================
 
-Cadre de l'audit
-----------------
-
-Ce projet doit etre lu comme un projet pedagogique de stage d'ecole, pas comme
-un projet client livre en production.
-
-La source de verite pour l'audit est le framework fourni :
-- architecture MVC ;
-- controleur principal www/index.php ;
-- URL sous la forme index.php?m=<module>&a=<action> ;
-- controleurs secondaires dans application/module/<module> ;
-- vues nommees vue_<module>_<action>.php ;
-- requetes SQL dans application/table ;
-- classes Table heritees de framework/Table.class.php ;
-- controleurs CRUD implementant I_crud ;
-- utilisation du gabarit commun ;
-- adaptation des vues generees par le generateur ;
-- authentification adaptee aux champs de la table utilisateur ;
-- droits d'acces avec checkAuth() et checkAllow() quand les modules sont reserves.
-
-Le cahier des charges reste utile pour savoir quel theme appliquer au projet
-ElectroMania, mais il ne doit pas etre juge comme une specification client
-complete. Il sert surtout de support pour pratiquer le framework.
+Date de l'audit : 30/06/2026
+Projet audite : ElectroMania
+Type de projet : application PHP MVC avec framework maison
 
 
-Verdict pedagogique
+1. Cadre de l'audit
 -------------------
 
-Le projet est une bonne base pedagogique avec le framework.
+Cet audit est un audit statique du code source. Il porte sur :
+- la structure du projet ;
+- la securite applicative ;
+- la logique metier ;
+- la base de donnees ;
+- la qualite du code ;
+- les points de maintenance.
 
-Les conventions principales sont respectees : structure MVC, modules, actions,
-vues, classes Table, CRUD, gabarit, recherche, authentification et panier.
+Verification effectuee :
+- inspection des fichiers du projet ;
+- recherche des usages de $_GET, $_POST, $_SESSION, SQL, CSRF et droits ;
+- controle de syntaxe PHP avec PHP 8.2.12.
 
-Le projet n'est pas "termine", mais il est deja exploitable pour montrer :
-- la generation et l'adaptation de CRUD ;
-- les jointures pour afficher des libelles a la place des ids ;
-- la creation d'actions personnalisees ;
-- la gestion d'une session utilisateur ;
-- la construction progressive d'un panier.
+Limites :
+- l'application n'a pas ete testee dans un navigateur ;
+- la base MySQL n'a pas ete lancee pendant l'audit ;
+- aucun audit de vulnerabilites externes en ligne n'a ete fait ;
+- les changements deja presents dans le working tree n'ont pas ete modifies,
+  sauf la creation de ce rapport.
 
-Les corrections a faire ne remettent pas en cause la base du projet. Elles
-servent surtout a rendre l'exercice coherent avec les regles du framework.
-
-
-Ce qui est conforme au framework
---------------------------------
-
-- Le controleur principal www/index.php charge la configuration puis instancie
-  le controleur demande avec les parametres m et a.
-- Les modules sont bien places dans application/module.
-- Les controleurs suivent la convention Ctr_<module>.
-- Les actions suivent la convention a_<action>().
-- Les vues suivent globalement la convention vue_<module>_<action>.php.
-- Les controleurs CRUD principaux implementent I_crud.
-- Les classes de table heritent de Table.
-- Les requetes specifiques sont placees dans application/table.
-- Les vues passent par le gabarit commun.
-- Les formulaires utilisent souvent csrfField().
-- L'authentification utilise password_hash() et password_verify().
-- Les methodes estEmailUnique() et selectByEmail() ont bien ete adaptees dans
-  Utilisateur.class.php, comme le demande la procedure du framework.
-- Les cles etrangeres sont deja ameliorees a plusieurs endroits :
-  - les commandes affichent le nom de l'utilisateur ;
-  - les articles affichent le libelle de categorie ;
-  - les utilisateurs affichent le nom du profil.
-- Des actions personnalisees ont ete ajoutees :
-  - article/catalogue ;
-  - article/recherche ;
-  - commande/panier ;
-  - commande/commandeparutilisateur ;
-  - commande/ajouteraupanier ;
-  - commande/editquantite.
+Resultat du controle syntaxique :
+- aucune erreur de syntaxe PHP detectee sur les fichiers .php audites.
 
 
-Ce qui est deja fait pour le sujet ElectroMania
------------------------------------------------
+2. Resume executif
+------------------
 
-- Page d'accueil avec les categories.
-- Images cliquables pour aller vers un catalogue de categorie.
-- Catalogue d'articles par categorie.
-- Recherche d'article par mot et categorie.
-- Authentification utilisateur.
-- Creation d'une commande en cours a la connexion, dans l'intention.
-- Affichage du panier avec nom d'article, quantite, prix unitaire et total.
-- CRUD d'administration pour les articles, categories, commandes, profils et
-  utilisateurs.
-- Menu adapte selon certains profils.
+Le projet est une bonne base pedagogique : la structure MVC est presente, les
+modules sont separes, les classes Table centralisent une partie du CRUD, les
+requetes specifiques utilisent souvent PDO prepare, les mots de passe sont
+haches avec password_hash(), et une protection CSRF a commence a etre ajoutee.
 
+En revanche, le projet n'est pas pret pour une mise en production. Les risques
+principaux sont :
+- des actions sensibles accessibles directement par URL ;
+- un generateur de code exposable depuis le routeur ;
+- une action de creation de base de donnees non protegee ;
+- des suppressions faites en GET sans CSRF ;
+- des controles d'autorisation incomplets ;
+- plusieurs bugs dans le panier et les commandes ;
+- des sorties HTML non echappees dans certains endroits.
 
-Points a corriger selon la source de verite du framework
---------------------------------------------------------
-
-1. Nom du script SQL et action creerbdd
-
-Dans le framework, l'action _default/creerbdd cherche le fichier :
-
-document/<DB_BDD>.sql
-
-Avec DB_BDD=electromania, le fichier attendu est donc :
-
-document/electromania.sql
-
-Or le projet contient :
-
-document/script_base_electromania.sql
-
-Ce n'est pas bloquant si la base est creee manuellement, mais ce n'est pas
-coherent avec le fonctionnement prevu par le framework.
+Priorite generale :
+1. Bloquer les routes dangereuses et proteger les actions sensibles.
+2. Corriger les droits dans tous les controleurs, pas seulement dans le menu.
+3. Corriger le panier, les suppressions et les verifications CSRF.
+4. Nettoyer les sorties HTML et les messages utilisateurs.
+5. Durcir la configuration et la base de donnees.
 
 
-2. Inscription a adapter aux champs reels de la table utilisateur
+3. Points positifs
+------------------
 
-La procedure du framework demande d'adapter la vue d'inscription aux champs de
-la table utilisateur.
+Architecture :
+- structure MVC claire : application/module, application/table, framework ;
+- controleur principal unique dans www/index.php ;
+- gabarit commun dans application/gabarit/gabarit.php ;
+- classes metier separees dans application/table ;
+- modules principaux presents : article, categorie, commande, contenir,
+  profil, utilisateur, authentification.
 
-Actuellement, le formulaire d'inscription ne demande pas :
-- uti_adresse ;
-- uti_numero_telephone.
+Base technique :
+- PDO utilise pour la connexion principale ;
+- PDO::ERRMODE_EXCEPTION active ;
+- plusieurs requetes applicatives utilisent prepare() et bindValue() ;
+- password_hash() et password_verify() sont utilises pour les mots de passe ;
+- une classe CsrfToken existe ;
+- csrfField() est present dans plusieurs formulaires ;
+- .env est bien ignore par .gitignore ;
+- les logs sont centralises dans framework/Logger.class.php.
 
-Pourtant ces champs sont obligatoires dans le script SQL.
-
-Autre point : le controleur met :
-
-uti_profil = "user"
-
-alors que la table utilisateur attend un id de profil numerique.
-
-Correction pedagogique attendue :
-- ajouter les champs manquants au formulaire ;
-- enregistrer un profil client valide, par exemple 1 si le profil client est
-  l'id 1 ;
-- garder une logique coherente entre les valeurs stockees en session et les
-  valeurs testees dans le menu et les controleurs.
-
-Fichiers concernes :
-- application/module/authentification/vue_authentification_inscription.php
-- application/module/authentification/ctr_authentification.class.php
-- document/script_base_electromania.sql
-- document/dataset.php
-
-
-3. Gestion des profils a harmoniser
-
-Le framework montre une logique de droits avec checkAllow().
-
-Dans ce projet, le menu teste surtout des ids numeriques :
-- 1 pour utilisateur/client ;
-- 3 pour admin.
-
-Mais certaines procedures du framework parlent plutot de noms de profils, par
-exemple "admin" ou "user".
-
-Les deux approches peuvent fonctionner dans un exercice, mais il faut choisir
-une seule convention et l'appliquer partout.
-
-Correction pedagogique attendue :
-- soit utiliser les ids de profils partout ;
-- soit stocker le nom du profil en session et utiliser checkAllow(["admin"]) ;
-- eviter de melanger "user", 1 et 3 dans la meme logique.
+Fonctionnel :
+- inscription et connexion presentes ;
+- catalogue par categorie ;
+- recherche d'articles ;
+- panier en cours d'implementation ;
+- CRUD d'administration pour plusieurs tables ;
+- schema SQL avec cles etrangeres principales.
 
 
-4. Droits d'acces seulement masques dans le menu
+4. Risques critiques
+--------------------
 
-Les fonctions checkAuth() et checkAllow() existent dans framework/fonction.php.
-
-Elles ne sont pas appelees dans les controleurs applicatifs.
-
-Dans le cadre du framework, masquer un lien dans inc_menu.php est une premiere
-etape, mais la procedure pedagogique demande aussi de proteger les controleurs.
-
-Correction pedagogique attendue :
-- ajouter checkAllow(...) dans les constructeurs ou actions reservees ;
-- proteger les modules admin comme article, categorie, commande, profil et
-  utilisateur ;
-- proteger le panier avec checkAuth().
-
-
-5. Commande en cours mal filtree
-
-La methode selectCommandeByUtilisateurConnecter() recupere une commande au
-statut "en cours", mais ne filtre pas l'utilisateur connecte.
-
-Dans un exercice pedagogique, le point important est la coherence de la session :
-le panier de l'utilisateur connecte doit correspondre a sa propre commande.
-
-Correction pedagogique attendue :
-- passer l'id utilisateur a la requete ;
-- ajouter une condition uti_id=:id ou com_utilisateur=:id ;
-- utiliser cette methode de facon coherente dans connexion, panier et liste des
-  commandes utilisateur.
-
-Fichiers concernes :
-- application/table/Commande.class.php
-- application/module/authentification/ctr_authentification.class.php
-- application/module/commande/Ctr_commande.class.php
-
-
-6. Parcours "ajouter au panier" incomplet
-
-L'action commande/ajouteraupanier existe, mais le lien du catalogue ne l'appelle
-pas directement. Il renvoie vers commande/index.
-
-La vue panier contient aussi une faute HTML :
-
-<se lect>
-
-au lieu de :
-
-<select>
-
-Enfin, le formulaire d'ajout au panier est affiche seulement quand le panier
-n'est pas vide, ce qui empeche de commencer un panier vide depuis cette page.
-
-Correction pedagogique attendue :
-- relier le bouton "Ajouter au panier" a la bonne action ;
-- corriger le select HTML ;
-- permettre l'ajout meme si le panier est vide ;
-- verifier que l'article ajoute est bien associe a la commande en cours.
-
-Fichiers concernes :
-- application/module/article/vue_article_catalogue.php
-- application/module/commande/vue_commande_panier.php
-- application/module/commande/Ctr_commande.class.php
-
-
-7. Suppression d'une ligne du panier
-
-Dans la page de modification de commande, le bouton supprimer d'une ligne du
-panier appelle commande/delete.
-
-Or une ligne de panier correspond a la table contenir, pas a la table commande.
-
-Correction pedagogique attendue :
-- soit appeler contenir/delete ;
-- soit creer une action commande/supprimerdupanier ;
-- supprimer l'enregistrement con_id dans la table contenir.
+4.1. Routeur trop permissif
 
 Fichier concerne :
-- application/module/commande/vue_commande_edit.php
+- www/index.php:14-15
+
+Le routeur construit directement le nom de classe depuis $_GET["m"] :
+- $module = "Ctr_" . $_GET["m"];
+- new $module($_GET["a"]);
+
+Probleme :
+- aucun filtrage strict de m et a ;
+- aucune liste blanche des modules autorises ;
+- aucune verification method_exists() ;
+- des modules techniques comme _generateur peuvent etre appeles si accessibles ;
+- une mauvaise valeur peut produire une exception et, en mode development,
+  exposer des informations techniques.
+
+Impact :
+- exposition d'actions non prevues ;
+- surface d'attaque importante ;
+- erreurs detaillees visibles si APP_ENV=development.
+
+Correction recommandee :
+- limiter m et a a un format strict, par exemple /^[a-z_]+$/ ;
+- declarer une liste blanche des modules publics ;
+- interdire _generateur, creerbdd et dataset hors environnement local ;
+- verifier que la classe et la methode existent avant instanciation ;
+- retourner une 404 propre si la route est invalide.
 
 
-8. Dataset a rendre coherent avec le schema
+4.2. Generateur de code exposable
 
-Dans document/dataset.php, l'insertion des commandes semble inverser :
-- com_statut ;
-- com_utilisateur.
+Fichier concerne :
+- application/module/_generateur/Ctr__generateur.class.php:3
+- application/module/_generateur/Ctr__generateur.class.php:69
+- application/module/_generateur/Ctr__generateur.class.php:80
+- application/module/_generateur/Ctr__generateur.class.php:92
+- application/module/_generateur/Ctr__generateur.class.php:101
+- application/module/_generateur/Ctr__generateur.class.php:109
+- application/module/_generateur/Ctr__generateur.class.php:123
 
-La table commande est declaree dans cet ordre :
-- com_id ;
-- com_date ;
-- com_statut ;
-- com_utilisateur.
+Le module _generateur peut creer ou ecraser des fichiers avec file_put_contents().
 
-Mais le dataset insere :
-- date ;
-- utilisateur ;
-- statut.
+Probleme :
+- aucune authentification dans le constructeur ;
+- aucune verification que l'application est en local ;
+- le routeur peut potentiellement atteindre ce module ;
+- le generateur ecrit dans application/table, application/module et gabarit.
 
-Correction pedagogique attendue :
-- inverser les deux valeurs dans le dataset ;
-- ou mieux, utiliser une insertion avec les noms de colonnes.
+Impact :
+- ecrasement de code applicatif ;
+- alteration du menu ;
+- creation de fichiers non voulus ;
+- risque majeur si l'application est publiee.
 
-
-Elements du cahier des charges a traiter apres le socle framework
------------------------------------------------------------------
-
-Ces points ne sont pas les premiers criteres de validation du framework, mais
-ils restent utiles si le sujet ElectroMania doit etre plus complet.
-
-Deja partiellement couvert :
-- categories principales ;
-- catalogue ;
-- recherche ;
-- authentification ;
-- panier ;
-- commandes ;
-- administration CRUD.
-
-Encore a ajouter ou ameliorer :
-- reference article ;
-- images propres a chaque article ;
-- bouton "acheter" ;
-- validation de commande ;
-- page ou action de paiement ;
-- calcul du chiffre d'affaires ;
-- role vendeur ;
-- gestion du stock ou retrait d'article ;
-- jeux compatibles avec chaque console ;
-- donnees realistes correspondant aux prix du cahier des charges.
-
-Dans un projet pedagogique, ces elements doivent etre ajoutes progressivement,
-apres avoir stabilise les conventions du framework.
+Correction recommandee :
+- retirer le module _generateur du deploiement ;
+- ou le bloquer par APP_ENV === "development" et checkAllow([3]) ;
+- ajouter une protection supplementaire cote routeur ;
+- ne jamais exposer ce module sur un serveur public.
 
 
-Priorites recommandees
-----------------------
+4.3. Creation de base de donnees non protegee
 
-1. Remettre le projet en coherence avec le framework :
-   - renommer ou dupliquer le script SQL en electromania.sql ;
-   - corriger le dataset ;
-   - harmoniser les profils ;
-   - adapter completement l'inscription aux champs utilisateur.
+Fichier concerne :
+- application/module/_default/Ctr__default.class.php:21-24
 
-2. Corriger le panier :
-   - filtrer la commande en cours par utilisateur ;
-   - brancher correctement "Ajouter au panier" ;
-   - corriger le select HTML ;
-   - supprimer une ligne contenir et non une commande.
+L'action a_creerbdd() execute :
+- Table::creer("../document/" . DB_BDD . ".sql");
 
-3. Ajouter les protections de controleurs :
-   - checkAuth() pour les actions connectees ;
-   - checkAllow() pour les actions admin ou vendeur.
+Probleme :
+- aucune authentification ;
+- aucune limitation a l'environnement local ;
+- le script SQL contient des DROP TABLE ;
+- l'action peut recreer ou vider des tables si appelee.
 
-4. Finir les adaptations des vues generees :
-   - remplacer les labels techniques par des labels lisibles ;
-   - retirer les textes d'aide generiques ;
-   - eviter d'afficher les ids quand un libelle est disponible ;
-   - nettoyer les restes du framework dans l'entete si besoin.
+Impact :
+- perte de donnees ;
+- indisponibilite de l'application ;
+- risque critique si l'URL est accessible.
 
-5. Completer ensuite les fonctionnalites metier du cahier des charges :
-   - paiement ;
-   - chiffre d'affaires ;
-   - role vendeur ;
-   - stock ;
-   - references et images des articles ;
-   - donnees realistes.
+Correction recommandee :
+- supprimer cette action en production ;
+- ou la proteger par APP_ENV === "development" et un controle admin ;
+- demander une confirmation forte ;
+- ne jamais laisser une action destructive accessible en GET/public.
 
 
-Conclusion
-----------
+4.4. Autorisations incompletes dans les controleurs
 
-Avec le bon angle pedagogique, le projet n'est pas un echec : il respecte deja
-une grande partie de la structure attendue par le framework.
+Fichiers concernes :
+- application/module/article/Ctr_article.class.php
+- application/module/categorie/Ctr_categorie.class.php
+- application/module/profil/Ctr_profil.class.php
+- application/module/utilisateur/Ctr_utilisateur.class.php
+- application/module/commande/Ctr_commande.class.php
+- application/module/contenir/Ctr_contenir.class.php
 
-L'ancien audit etait trop oriente "projet client finalise". Le jugement correct
-est plutot :
+Constat :
+- certains a_index() utilisent checkAllow([3]) ;
+- mais a_edit(), a_save(), a_delete() et a_show() ne sont pas tous proteges ;
+- le module contenir n'a pas de checkAllow() ;
+- le menu masque certains liens, mais les URLs restent appelables directement.
 
-Le socle framework est bien compris et deja applique. Il faut maintenant
-stabiliser les incoherences de donnees, le parcours panier, l'inscription et les
-droits d'acces pour que le projet soit propre dans le cadre du stage.
+Exemples :
+- article/Ctr_article.class.php:15 protege seulement a_index().
+- categorie/Ctr_categorie.class.php:15 protege seulement a_index().
+- profil/Ctr_profil.class.php:15 protege seulement a_index().
+- utilisateur/Ctr_utilisateur.class.php:15 protege seulement a_index().
+- commande/Ctr_commande.class.php:18 protege seulement a_index().
+- contenir/Ctr_contenir.class.php n'a pas de controle d'acces.
+
+Impact :
+- un utilisateur peut tenter d'appeler directement des actions admin ;
+- modification ou suppression possible si les autres conditions sont remplies ;
+- securite basee sur l'affichage du menu, pas sur le serveur.
+
+Correction recommandee :
+- placer checkAllow([3]) dans les actions admin elles-memes ;
+- ou proteger tout le controleur dans le constructeur selon le module ;
+- proteger les actions panier avec checkAuth() et verification de propriete ;
+- ne jamais se limiter au masquage des liens HTML.
 
 
-Verification effectuee
-----------------------
+4.5. Suppressions en GET sans CSRF
 
-Un controle de syntaxe PHP a ete lance sur les fichiers du projet lors de
-l'audit precedent.
+Fichiers concernes :
+- application/module/article/Ctr_article.class.php:68-74
+- application/module/categorie/Ctr_categorie.class.php:68-74
+- application/module/profil/Ctr_profil.class.php:68-74
+- application/module/utilisateur/Ctr_utilisateur.class.php:68-74
+- application/module/contenir/Ctr_contenir.class.php:67-73
+- application/module/commande/Ctr_commande.class.php:77-88
 
-Aucune erreur de syntaxe PHP n'a ete detectee.
+Probleme :
+- les suppressions utilisent $_GET["id"] ;
+- il n'y a pas de verification CSRF ;
+- les liens de suppression sont de simples <a href=...> ;
+- une image, un lien ou une page externe pourrait declencher l'action.
 
-Les points releves sont donc principalement des problemes de coherence avec le
-framework, de logique applicative et d'adaptation pedagogique des vues generees.
+Impact :
+- suppression non intentionnelle ;
+- faille CSRF ;
+- comportement dangereux pour les donnees.
+
+Correction recommandee :
+- transformer les suppressions en formulaires POST ;
+- ajouter csrfField() dans chaque formulaire ;
+- verifier verifyCsrf() dans chaque a_delete() ;
+- ajouter checkAllow() ou checkAuth() selon le cas ;
+- verifier que l'utilisateur possede la ressource avant suppression.
+
+
+5. Risques importants
+---------------------
+
+5.1. Bug dans la suppression de commande
+
+Fichier concerne :
+- application/module/commande/Ctr_commande.class.php:77-88
+
+Le code teste :
+- if ($com_statut == 1)
+
+Probleme :
+- $com_statut n'est pas defini dans cette methode ;
+- avec le gestionnaire d'erreurs, cela peut declencher une erreur 500 ;
+- la suppression de commande risque donc de ne pas fonctionner.
+
+Correction recommandee :
+- charger la commande depuis son id ;
+- lire son statut reel ;
+- supprimer seulement si le statut l'autorise ;
+- sinon renvoyer un message propre.
+
+
+5.2. Suppression d'une ligne de panier dirigee vers la mauvaise action
+
+Fichier concerne :
+- application/module/commande/vue_commande_edit.php:79
+
+Le bouton de suppression d'une ligne du panier appelle :
+- commande/delete avec id=$con_id
+
+Probleme :
+- $con_id appartient a la table contenir ;
+- commande/delete supprime une commande, pas une ligne de panier ;
+- cela peut produire une erreur ou supprimer une mauvaise donnee si les ids se
+  recoupent.
+
+Correction recommandee :
+- creer une action commande/supprimerdupanier ;
+- ou appeler contenir/delete avec controles d'autorisation ;
+- verifier que la ligne appartient bien a la commande de l'utilisateur.
+
+
+5.3. Ajout au panier incoherent depuis le catalogue
+
+Fichiers concernes :
+- application/module/article/vue_article_catalogue.php:53
+- application/module/commande/Ctr_commande.class.php:135-147
+
+Le catalogue envoie :
+- commande/ajouteraupanier&id=$art_id
+
+Mais l'action a_ajouteraupanier() utilise $_GET["id"] comme id de commande :
+- $_POST["con_commande"] = $_GET["id"];
+
+Probleme :
+- le lien du catalogue passe un id article ;
+- l'action attend un id commande ;
+- l'action attend aussi con_quantite et con_article en POST ;
+- donc le lien "Ajouter au panier" ne peut pas ajouter correctement un article.
+
+Correction recommandee :
+- utiliser la commande en cours depuis $_SESSION["com_id"] ;
+- passer l'id article dans un champ explicite, par exemple art_id ;
+- demander la quantite dans un formulaire POST ;
+- verifier CSRF et authentification.
+
+
+5.4. Modification de quantite sans verification CSRF effective
+
+Fichiers concernes :
+- application/module/commande/vue_commande_editquantite.php:11
+- application/module/commande/Ctr_commande.class.php:150-164
+
+La vue contient csrfField(), mais a_editquantite() ne verifie pas verifyCsrf().
+
+Impact :
+- modification possible sans protection CSRF serveur ;
+- le token est affiche mais non utilise.
+
+Correction recommandee :
+- ajouter verifyCsrf() avant save($_POST) ;
+- ajouter checkAuth() ;
+- verifier que con_id appartient a la commande de l'utilisateur connecte.
+
+
+5.5. Panier et commandes : propriete insuffisamment verifiee
+
+Fichiers concernes :
+- application/module/commande/Ctr_commande.class.php:93-117
+- application/module/commande/Ctr_commande.class.php:120-132
+- application/table/Commande.class.php:49-56
+- application/table/Commande.class.php:59-67
+
+Points positifs :
+- selectCommandeByUtilisateurConnecter($id) filtre maintenant sur uti_id=:id.
+
+Problemes restants :
+- selectPanierByCommande($id) recupere un panier par id de commande sans
+  verifier l'utilisateur ;
+- a_commandeparutilisateur() ignore le parametre id du lien et utilise la
+  session ;
+- les actions edit, show et save de commande ne verifient pas toujours que la
+  commande appartient a l'utilisateur ou que l'utilisateur est admin.
+
+Correction recommandee :
+- ajouter des methodes qui filtrent par commande ET utilisateur ;
+- separer clairement les actions admin et les actions client ;
+- pour un client, ne jamais faire confiance a un id commande fourni en URL.
+
+
+5.6. Messages et sorties HTML non echappes
+
+Fichiers concernes :
+- application/gabarit/inc_message.php:3-5
+- application/gabarit/inc_menu.php:25
+- framework/Table.class.php:146-161
+- application/module/*/vue_*_show.php:20
+
+Probleme :
+- inc_message.php affiche directement $message ;
+- certains messages contiennent des valeurs utilisateur, par exemple email,
+  prenom ou nom ;
+- inc_menu.php affiche $_SESSION["uti_nom"] sans echappement ;
+- Table::HTMLselect() genere des options sans echapper value et label ;
+- les vues show affichent print_r($row), ce qui ressemble a du debug.
+
+Impact :
+- risque XSS si une valeur utilisateur contient du HTML/JS ;
+- fuite d'informations techniques ;
+- rendu peu professionnel.
+
+Correction recommandee :
+- afficher les messages avec mhe($message) ;
+- echapper toutes les valeurs de session avant affichage ;
+- echapper les options dans Table::HTMLselect() ;
+- remplacer print_r($row) par un affichage propre ou retirer ces vues debug.
+
+
+5.7. Mode development active
+
+Fichiers concernes :
+- .env:3
+- framework/ErrorHandler.class.php
+
+APP_ENV vaut development.
+
+Probleme :
+- en development, ErrorHandler affiche message, fichier, ligne et trace ;
+- c'est utile localement mais dangereux en production.
+
+Correction recommandee :
+- utiliser APP_ENV=production sur un serveur public ;
+- ne pas versionner les secrets ;
+- garder .env local uniquement ;
+- prevoir un .env.example sans mot de passe reel.
+
+
+6. Qualite, maintenance et robustesse
+-------------------------------------
+
+6.1. Base de donnees
+
+Fichier concerne :
+- document/electromania.sql
+
+Points positifs :
+- schema clair ;
+- cles etrangeres ajoutees ;
+- statut separe dans une table ;
+- utilisateur, profil, categorie, article, commande et contenir sont presents.
+
+Points a ameliorer :
+- uti_email n'a pas de contrainte UNIQUE ;
+- art_prix est en FLOAT, mieux vaut DECIMAL(10,2) pour des prix ;
+- plusieurs varchar(100) pourraient etre ajustes selon usage ;
+- les contraintes n'ont pas de regle ON DELETE explicite ;
+- les donnees de test utilisent des valeurs generiques.
+
+Correction recommandee :
+- ajouter UNIQUE(uti_email) ;
+- remplacer FLOAT par DECIMAL(10,2) ;
+- definir les politiques ON DELETE selon le besoin ;
+- utiliser des INSERT avec noms de colonnes.
+
+
+6.2. Dataset
+
+Fichier concerne :
+- document/dataset.php
+
+Points positifs :
+- password_hash() est utilise pour les utilisateurs de test ;
+- l'ordre com_statut/com_utilisateur semble corrige par rapport a l'ancien etat.
+
+Points a ameliorer :
+- connexion MySQL hardcodee en root sans mot de passe ;
+- mot de passe de test identique pour tous les utilisateurs ("mdp") ;
+- insertions construites par concatenation ;
+- aucune gestion d'erreur mysqli visible ;
+- les donnees sont tres generiques.
+
+Correction recommandee :
+- utiliser la configuration .env ;
+- utiliser les noms de colonnes dans les INSERT ;
+- garder ce fichier uniquement pour l'environnement local ;
+- afficher les erreurs de seed de facon claire.
+
+
+6.3. Formulaires HTML
+
+Fichiers concernes :
+- application/module/article/vue_article_edit.php:31
+- application/module/article/vue_article_recherche.php:22
+- application/module/commande/vue_commande_edit.php:21
+- application/module/commande/vue_commande_edit.php:26
+- application/module/commande/vue_commande_panier.php:74
+
+Problemes observes :
+- attribut required parfois place dans le contenu du <select> ;
+- attribut value utilise sur des <select>, ce qui n'est pas utile ;
+- certains formulaires utilisent des labels techniques ;
+- le formulaire d'ajout au panier n'apparait que si le panier n'est pas vide.
+
+Correction recommandee :
+- mettre required dans la balise <select> ;
+- gerer la selection uniquement avec selected dans les <option> ;
+- permettre l'ajout au panier meme si le panier est vide ;
+- remplacer les libelles techniques par des libelles utilisateur.
+
+
+6.4. Authentification et session
+
+Fichiers concernes :
+- application/module/authentification/ctr_authentification.class.php
+- application/module/authentification/vue_authentification_inscription.php
+- application/module/authentification/vue_authentification_connexion.php
+
+Points positifs :
+- password_hash() ;
+- password_verify() ;
+- token CSRF sur connexion et inscription ;
+- profil client force a 1 lors de l'inscription.
+
+Points a ameliorer :
+- pas de session_regenerate_id(true) apres connexion ;
+- deconnexion vide $_SESSION mais n'appelle pas session_destroy() ;
+- pas de limite de tentatives de connexion ;
+- message different si email inconnu ou mot de passe faux, ce qui facilite
+  l'enumeration des comptes ;
+- champ telephone pre-rempli avec mhe($uti_email) au lieu de la valeur telephone.
+
+Correction recommandee :
+- regenerer l'id de session apres connexion ;
+- detruire proprement la session a la deconnexion ;
+- utiliser un message generique de connexion echouee ;
+- corriger la valeur de uti_numero_telephone dans la vue inscription ;
+- ajouter required et type=email sur les champs adaptes.
+
+
+6.5. Encodage
+
+Constat :
+- plusieurs sorties lues en console affichent des caracteres mal encodes
+  comme "donnÃ©es" au lieu de "donnees" avec accents.
+
+Cause probable :
+- difference entre encodage des fichiers, terminal PowerShell et/ou fichiers
+  historiques.
+
+Correction recommandee :
+- verifier que tous les fichiers texte/PHP sont en UTF-8 ;
+- garder <meta charset="utf-8"> ;
+- eviter de melanger plusieurs encodages.
+
+
+7. Corrections prioritaires proposees
+-------------------------------------
+
+Priorite 1 - Securiser les routes sensibles :
+- ajouter une liste blanche dans www/index.php ;
+- bloquer _generateur hors local ;
+- bloquer _default/creerbdd et _default/dataset hors local/admin ;
+- verifier classe et methode avant appel.
+
+Priorite 2 - Reprendre les autorisations :
+- proteger chaque action admin avec checkAllow([3]) ;
+- proteger chaque action client avec checkAuth() ;
+- verifier la propriete des commandes et lignes de panier ;
+- ne pas se fier au menu pour la securite.
+
+Priorite 3 - Corriger les actions destructrices :
+- convertir les delete en POST ;
+- ajouter verifyCsrf() ;
+- corriger commande/delete et la suppression de ligne panier ;
+- verifier les statuts avant suppression.
+
+Priorite 4 - Stabiliser le panier :
+- utiliser $_SESSION["com_id"] pour la commande en cours ;
+- passer art_id separement de com_id ;
+- ajouter quantite via POST ;
+- permettre l'ajout meme si le panier est vide ;
+- corriger editquantite avec CSRF et controle de propriete.
+
+Priorite 5 - Nettoyer les sorties :
+- echapper les messages ;
+- echapper les valeurs de session ;
+- echapper Table::HTMLselect() ;
+- retirer print_r($row) des vues show ;
+- corriger les select HTML invalides.
+
+Priorite 6 - Durcir la base :
+- UNIQUE sur uti_email ;
+- DECIMAL pour les prix ;
+- .env.example ;
+- APP_ENV=production en production ;
+- seed local mieux separe.
+
+
+8. Conclusion
+-------------
+
+ElectroMania est un projet pedagogique deja bien structure. Le socle MVC est
+compris et plusieurs bonnes pratiques sont presentes, notamment les requetes
+preparees dans les classes metier, le hachage des mots de passe et l'ajout
+progressif de CSRF.
+
+Le principal probleme n'est pas la structure generale, mais le niveau de
+protection serveur. Beaucoup d'actions sont accessibles directement par URL et
+les droits ne sont pas appliques partout. Avant d'ajouter de nouvelles
+fonctionnalites, il faut donc securiser le routeur, les controleurs et les
+actions de modification/suppression.
+
+Une fois ces points corriges, le projet pourra devenir une base solide pour
+continuer le panier, la validation de commande, le paiement fictif, le chiffre
+d'affaires et les roles metier demandes dans le cahier des charges.

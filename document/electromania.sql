@@ -58,7 +58,7 @@ drop table if exists commande;
 create table commande (
 	com_id int not null auto_increment primary key,
 	com_date datetime not null,
-	com_statut varchar(50) not null,
+	com_statut int not null,
 	com_utilisateur int not null
 )engine=innodb; 
 
@@ -78,7 +78,8 @@ set foreign_key_checks =1;
 -- contraintes
 alter table utilisateur add constraint cs1 foreign key (uti_profil) references profil(pro_id);
 alter table article add constraint cs2 foreign key (art_categorie) references categorie(cat_id);
-alter table contenir add constraint cs5 foreign key (con_commande) references commande(com_id);
-alter table contenir add constraint cs6 foreign key (con_article) references article(art_id);
+alter table commande add constraint cs3 foreign key (com_statut) references statut(sta_id);
+alter table contenir add constraint cs4 foreign key (con_commande) references commande(com_id);
+alter table contenir add constraint cs5 foreign key (con_article) references article(art_id);
 
 
