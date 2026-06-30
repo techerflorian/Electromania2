@@ -10,8 +10,16 @@
                 <input id='uti_prenom' name='uti_prenom' type='text' size='50' value='<?= mhe($uti_prenom) ?>' class='form-control' />
             </div>
             <div class='form-group'>
+                <label for='uti_adresse'>Adresse</label>
+                <input id='uti_adresse' name='uti_adresse' type='text' size='50' value='<?= mhe($uti_adresse) ?>' class='form-control' />
+            </div>
+            <div class='form-group'>
                 <label for='uti_email'>Email</label>
                 <input id='uti_email' name='uti_email' type='text' size='50' value='<?= mhe($uti_email) ?>' class='form-control' />
+            </div>
+            <div class='form-group'>
+                <label for='uti_numero_telephone'>Téléphone</label>
+                <input id='uti_numero_telephone' name='uti_numero_telephone' type='text' size='50' value='<?= mhe($uti_email) ?>' class='form-control' />
             </div>
             <div class='form-group'>
                 <label for='uti_mdp'>Mot de passe</label>

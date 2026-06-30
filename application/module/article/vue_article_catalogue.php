@@ -50,7 +50,7 @@
 			<td><?=$art_prix?></td>
 			<td><?=$art_description?></td>
 			<td><?=$cat_libelle?></td>
-            <td><a href="<?= hlien("commande", "index", "id", $art_id) ?>">Ajouter au panier</a></td>
+            <td><a href="<?= hlien("commande", "ajouteraupanier", "id", $art_id) ?>">Ajouter au panier</a></td>
             <?php if (isset($_SESSION["uti_profil"]) and $_SESSION["uti_profil"]==3) { ?>
             <td class="text-center">
                 <a class="btn btn-sm btn-info" href="<?=hlien("article","show","id",$art_id)?>" title="Voir">

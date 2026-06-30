@@ -15,6 +15,7 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 
 	function a_index()
 	{
+		checkAllow([3]);
 		$u = new Commande();
 		$data = $u->selectAll();
 		require $this->gabarit;
@@ -89,6 +90,7 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 
 	function a_panier()
 	{
+		checkAuth();
 		$u = new Commande();
 		$com_id = 0;
 		$com_date = "";

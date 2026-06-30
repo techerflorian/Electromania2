@@ -12,6 +12,7 @@ class Ctr_utilisateur extends Ctr_controleur implements I_crud {
     }
 
 	function a_index() {
+		checkAllow([3]);
 		$u=new Utilisateur();
 		$data=$u->selectProfilByUtilisateur();
 		require $this->gabarit;

@@ -48,7 +48,7 @@ class Ctr_authentification extends Ctr_controleur
             //Tous est ok : enregistrement du nouvel utilisateur
             $_POST["uti_id"]=0;
             $_POST["uti_mdp"]=password_hash($_POST["uti_mdp"],PASSWORD_DEFAULT);
-            $_POST["uti_profil"]="user";
+            $_POST["uti_profil"]=1;
             (new Utilisateur)->save($_POST);
             $_SESSION["message"][]="Bravo $uti_prenom ! Inscription réussie. Vous pouvez maintenant vous connecter.";
             //rediriger sur l'accueil
@@ -102,7 +102,7 @@ class Ctr_authentification extends Ctr_controleur
             $_SESSION["uti_prenom"]=$uti_prenom;
             $_SESSION["uti_email"]=$uti_email;
             $_SESSION["uti_profil"]=$uti_profil;
-            $data=Commande::selectCommandeByUtilisateurConnecter();
+            $data=Commande::selectCommandeByUtilisateurConnecter($_SESSION["uti_id"]);
             if ($data==false) {
                 $row=[];
                 $row["com_id"]=0;

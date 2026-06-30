@@ -12,6 +12,7 @@ class Ctr_categorie extends Ctr_controleur implements I_crud {
     }
 
 	function a_index() {
+		checkAllow([3]);
 		$u=new Categorie();
 		$data=$u->selectAll();
 		require $this->gabarit;

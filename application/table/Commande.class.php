@@ -56,10 +56,11 @@ class Commande extends Table
 	}
 
 
-	static public function selectCommandeByUtilisateurConnecter()
+	static public function selectCommandeByUtilisateurConnecter($id)
 	{
-		$sql = "select * from commande, utilisateur, statut where com_utilisateur=uti_id and com_statut=sta_id and sta_nom='en cours'";
+		$sql = "select * from commande, utilisateur, statut where com_utilisateur=uti_id and com_statut=sta_id and sta_nom='en cours' and uti_id=:id";
 		$statement = self::$link->prepare($sql);
+		$statement->bindValue(":id",$id);
 		$statement->execute();
 		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	}

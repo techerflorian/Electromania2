@@ -12,6 +12,7 @@ class Ctr_profil extends Ctr_controleur implements I_crud {
     }
 
 	function a_index() {
+		checkAllow([3]);
 		$u=new Profil();
 		$data=$u->selectAll();
 		require $this->gabarit;

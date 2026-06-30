@@ -71,7 +71,7 @@
 
                         <div class='mb-3'>
                             <label for='con_article' class='form-label'>art_id <span class='text-danger'>*</span></label>                            
-                            <se lect id='con_article' name='con_article' value='<?= $con_article ?>'  class='form-select' required<?= Table::HTMLselect('select * from article', 'art_id', 'art_nom', $con_article) ?> ></select>
+                            <select id='con_article' name='con_article' value='<?= $con_article ?>'  class='form-select' required<?= Table::HTMLselect('select * from article', 'art_id', 'art_nom', $con_article) ?> ></select>
                             <small class='form-text text-muted'>aide à la saisie</small>
                         </div>
                         <div class='mb-3'>
