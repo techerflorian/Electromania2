@@ -20,12 +20,25 @@ class Ctr__default extends Ctr_controleur {
     //execute le script de création de la BDD qui doit être placé dans "document" et porter le nom de la BDD
     public function a_creerbdd()    
     {
+        if (APP_ENV !== "development") {
+            $_SESSION["message"][]="Action disponible uniquement en development";
+            header("location:" . hlien("_default"));
+            exit; 
+        }
+        checkAllow([3]);
         $sql = Table::creer("../document/" . DB_BDD . ".sql");
         require $this->gabarit;
     }
 
     public function a_dataset()
     {
+        if (APP_ENV !== "development") {
+            $_SESSION["message"][]="Action disponible uniquement en development";
+            header("location:" . hlien("_default"));
+            exit; 
+        }
+        checkAllow([3]);
+        checkAllow([3]);
         $message = Table::dataset();
         require $this->gabarit;
     }

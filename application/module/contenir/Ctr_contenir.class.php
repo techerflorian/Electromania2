@@ -12,6 +12,7 @@ class Ctr_contenir extends Ctr_controleur implements I_crud {
     }
 
 	function a_index() {
+		checkAllow([3]);
 		$u=new Contenir();
 		$data=$u->selectAll();
 		require $this->gabarit;
