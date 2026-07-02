@@ -27,8 +27,18 @@
                             <small class='form-text text-muted'>aide à la saisie</small>
                         </div>
                         <div class='mb-3'>
+                            <label for='uti_email' class='form-label'>Uti_email <span class='text-danger'>*</span></label>                            
+                            <input id='uti_email' name='uti_email' type='text' size='80' value='<?=$uti_email?>'  class='form-control' required />
+                            <small class='form-text text-muted'>aide à la saisie</small>
+                        </div>
+                        <div class='mb-3'>
                             <label for='uti_numero_telephone' class='form-label'>Uti_numero_telephone <span class='text-danger'>*</span></label>                            
                             <input id='uti_numero_telephone' name='uti_numero_telephone' type='text' size='80' value='<?=$uti_numero_telephone?>'  class='form-control' required />
+                            <small class='form-text text-muted'>aide à la saisie</small>
+                        </div>
+                        <div class='mb-3'>
+                            <label for='uti_mdp' class='form-label'>Uti_mdp <span class='text-danger'>*</span></label>                            
+                            <input id='uti_mdp' name='uti_mdp' type='password' size='80' value='<?=$uti_mdp?>'  class='form-control' required />
                             <small class='form-text text-muted'>aide à la saisie</small>
                         </div>
                         <div class='mb-3'>

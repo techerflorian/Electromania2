@@ -19,7 +19,7 @@ dans son panier.
 Si il est authentifier il pourrat acheter des produit et ou enregistrer des produit qu'il pourrat 
 acheter plus tard.
 
-C. Les article :  
+C. Les article : 
 Les article seront representer sous la forme d'une image, de son nom, de sa reference, de son prix, et de sa description, 
 d'un bouton ajouter au panier, d'un bouton acheter, par categorie.
 

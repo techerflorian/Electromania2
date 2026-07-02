@@ -24,6 +24,7 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 	//$_GET["id"] : id de l'enregistrement
 	function a_edit()
 	{
+		checkAllow([3,2]);
 		$id = isset($_GET["id"]) ? $_GET["id"] : 0;
 		$u = new Commande();
 		if ($id > 0) {
@@ -41,6 +42,7 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 	//$_GET["id"] : id de l'enregistrement
 	function a_show()
 	{
+		checkAllow([3]);
 		$id = isset($_GET["id"]) ? $_GET["id"] : 0;
 		$u = new Commande();
 		if ($id > 0)
@@ -56,6 +58,7 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 	//$_POST
 	function a_save()
 	{
+		checkAllow([3,2]);
 		if (isset($_POST["btSubmit"])) {
 			if (!verifyCsrf()) {
 				$_SESSION["message"][] = "Erreur de sécurité : token CSRF invalide.";
@@ -76,6 +79,7 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 	//param GET id 
 	function a_delete()
 	{
+		checkAllow([3,2]);
 		if (isset($_GET["id"])) {
 			if ($com_statut == 1) {
 				$u = new Commande();
@@ -83,6 +87,7 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 				$_SESSION["message"][] = "L'enregistrement Commande a bien été supprimé.";
 			} else {
 				$_SESSION["message"][] = "L'enregistrement Commande ne peut pas etre supprimé.";
+				$com_statut=2;
 			}
 		}
 		header("location:" . hlien("commande"));
@@ -119,6 +124,7 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 
 	function a_commandeparutilisateur()
 	{
+		checkAuth();
 		$u = new Commande();
 		$com_id = 0;
 		$com_date = "";
@@ -134,6 +140,7 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 
 	function a_ajouteraupanier()
 	{
+		checkAuth();
 		if (isset($_GET["id"]) and isset($_POST["con_quantite"]) and isset($_POST["con_article"])) {
 			$_POST["con_commande"] = $_GET["id"];
 			if (!verifyCsrf()) {
@@ -149,6 +156,7 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 
 	function a_editquantite()
 	{
+		checkAuth();
 		$id = isset($_GET["id"]) ? $_GET["id"] : 0;
 		if (isset($_POST["btSubmit"])) {
 			$u = new Contenir();

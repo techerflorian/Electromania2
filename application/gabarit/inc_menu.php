@@ -17,6 +17,8 @@
 <?php } else if (isset($_SESSION["uti_id"]) and $_SESSION["uti_profil"]==1) { ?>
 <li><a class='nav-link' href='<?=hlien("commande","panier")?>'>Panier</a></li>
 <li><a class='nav-link' href='<?=hlien("commande","commandeparutilisateur","id",$_SESSION["uti_id"])?>'>Mes commandes</a></li>
+<?php } else if (isset($_SESSION["uti_id"]) and $_SESSION["uti_profil"]==2) { ?>
+<li><a class='nav-link' href='<?=hlien("article","index")?>'>Article</a></li>
       </ul>
       <?php } ?>
       <ul class="navbar-nav ml-auto">
