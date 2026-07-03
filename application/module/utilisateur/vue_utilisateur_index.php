@@ -46,7 +46,7 @@
 			<td><?=$uti_adresse?></td>
 			<td><?=$uti_email?></td>
 			<td><?=$uti_numero_telephone?></td>
-			<td><a href="<?=hlien("commande", "commandeparutilisateur", "id", $uti_id)?>">commande</a></td>
+			<td><a href="<?=hlien("commande", "index", "id", $uti_id)?>">commande</a></td>
 			<td><?=$pro_nom?></td>
             <td class="text-center">
                 <a class="btn btn-sm btn-info" href="<?=hlien("utilisateur","show","id",$uti_id)?>" title="Voir">

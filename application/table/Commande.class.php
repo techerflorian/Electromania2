@@ -73,4 +73,12 @@ class Commande extends Table
 		$statement->execute();
 		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	}
+
+	public function ChiffreDaffaireTotal()
+	{
+		$sql="select * 
+		from commande, contenir, article, statut 
+		where con_commande=com_id and con_article=art_id 
+		and com_statut=sta_id and con_quantite*art_prix and group by(sta_nom='valider')";
+	}
 }

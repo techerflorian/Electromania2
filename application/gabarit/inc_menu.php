@@ -19,6 +19,7 @@
 <li><a class='nav-link' href='<?=hlien("commande","commandeparutilisateur","id",$_SESSION["uti_id"])?>'>Mes commandes</a></li>
 <?php } else if (isset($_SESSION["uti_id"]) and $_SESSION["uti_profil"]==2) { ?>
 <li><a class='nav-link' href='<?=hlien("article","index")?>'>Article</a></li>
+<li><a class='nav-link' href='<?=hlien("commande","index")?>'>ommandes utilisateur</a></li>
       </ul>
       <?php } ?>
       <ul class="navbar-nav ml-auto">

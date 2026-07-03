@@ -41,12 +41,12 @@
 			<td><?=$com_date?></td>
             <td><?=$sta_nom?></td>
 			<td><?=$uti_nom?></td>
+            <?php if ($com_statut==1) { ?>
             <td><a href="<?= hlien("commande", "panier", "id", $com_id) ?>" >Panier</a></td>
             <td class="text-center">
                 <a class="btn btn-sm btn-info" href="<?=hlien("commande","show","id",$com_id)?>" title="Voir">
                     <i class="bi bi-eye"></i>
                 </a>
-                <?php if ($com_statut==1) { ?>
                 <a class="btn btn-sm btn-warning" href="<?= hlien("commande", "edit", "id", $com_id) ?>" title="Modifier">
                                         <i class="bi bi-pencil"></i>
                                     </a>

@@ -15,7 +15,7 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 
 	function a_index()
 	{
-		checkAllow([3]);
+		checkAllow([3,2]);
 		$u = new Commande();
 		$data = $u->selectAll();
 		require $this->gabarit;
