@@ -96,6 +96,7 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 	function a_panier()
 	{
 		checkAuth();
+		checkAllow([3,2,1]);
 		$u = new Commande();
 		$com_id = 0;
 		$com_date = "";
@@ -170,5 +171,24 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 				extract(array_map("mhe", $row));
 			require $this->gabarit;
 		}
+	}
+
+	function a_chiffredaffaire()
+	{
+		checkAllow([3]);
+		$cat_id=0;
+		$cat_libelle="";
+		$con_quantite=0;
+		$art_prix=0;
+		$sta_nom="";
+
+		$u = new Commande();
+		$chiffredaffaire=$u->ChiffreDaffaireTotal();
+		require $this->gabarit;
+	}
+
+	function a_acheter()
+	{
+		
 	}
 }

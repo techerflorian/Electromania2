@@ -76,9 +76,12 @@ class Commande extends Table
 
 	public function ChiffreDaffaireTotal()
 	{
-		$sql="select * 
-		from commande, contenir, article, statut 
-		where con_commande=com_id and con_article=art_id 
-		and com_statut=sta_id and con_quantite*art_prix and group by(sta_nom='valider')";
+		$sql="select cat_id, cat_libelle, sum(con_quantite*art_prix) total, sta_nom  
+		from contenir, article, categorie, commande, statut 
+		where con_commande=com_id and con_article=art_id and art_categorie=cat_id and com_statut=sta_id and
+		sta_nom='valider' group by cat_id";
+		$statement = self::$link->prepare($sql);
+		$statement->execute();
+		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 }
