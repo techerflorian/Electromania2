@@ -37,7 +37,6 @@
                                 <td><?= $art_prix ?></td>
                                 <td><?= $art_description ?></td>
                                 <td><?= $con_quantite*$art_prix ?></td>
-                                <td><a href="<?= hlien("commande", "acheter") ?>">Acheter</a></td>
                                 <td class="text-center">
                                     <a class="btn btn-sm btn-info" href="<?= hlien("commande", "show", "id", $com_id) ?>" title="Voir">
                                         <i class="bi bi-eye"></i>

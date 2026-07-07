@@ -186,9 +186,4 @@ class Ctr_commande extends Ctr_controleur implements I_crud
 		$chiffredaffaire=$u->ChiffreDaffaireTotal();
 		require $this->gabarit;
 	}
-
-	function a_acheter()
-	{
-		
-	}
 }

@@ -20,7 +20,7 @@ class Ctr_article extends Ctr_controleur implements I_crud {
 	
 	//$_GET["id"] : id de l'enregistrement
 	function a_edit() {
-		checkAllow([3]);	
+		checkAllow([3,2]);	
 		$id = isset($_GET["id"]) ? $_GET["id"] : 0;
 		$u=new Article();
 		if ($id>0)
